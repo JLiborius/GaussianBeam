@@ -143,10 +143,13 @@ QVariant GaussianBeamModel::data(const QModelIndex& index, int role) const
 			}
 		}
 	}
-	else if (column == Property::BeamWaist)
+    else if (column == Property::BeamWaist_v)
+    {
+        values << m_bench->beam(row)->waist(Vertical)*Unit(UnitWaist).divider();
+    }
+    else if (column == Property::BeamWaist_h)
 	{
 		values << m_bench->beam(row)->waist(Horizontal)*Unit(UnitWaist).divider();
-		if (!m_bench->isSpherical()) values << m_bench->beam(row)->waist(Vertical)*Unit(UnitWaist).divider();
 	}
 	else if (column == Property::BeamWaistPosition)
 	{

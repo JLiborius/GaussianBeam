@@ -107,7 +107,7 @@ void Beam::setWaistPosition(double waistPosition, Orientation orientation)
 double Beam::waist(Orientation orientation) const
 {
 	if (orientation == Vertical)
-		return m_waist.second;
+        return m_waist.second;
 
 	return m_waist.first;
 }

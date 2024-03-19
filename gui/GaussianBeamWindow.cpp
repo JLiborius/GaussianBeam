@@ -39,7 +39,7 @@ GaussianBeamWindow::GaussianBeamWindow(const QString& fileName)
 	setWindowIcon(QIcon(":/images/gaussianbeam16.png"));
 
 	// Bench
-	m_bench = new OpticsBench();
+    m_bench = new OpticsBench();
 	m_bench->populateDefault();
 	m_bench->registerEventListener(this);
 

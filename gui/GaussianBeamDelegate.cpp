@@ -86,7 +86,9 @@ QWidget *GaussianBeamDelegate::createEditor(QWidget* parent,
 		editor->setMaximum(Utils::infinity);
 		return editor;
 	}
-	case Property::BeamWaist:
+    case Property::BeamWaist:
+    case Property::BeamWaist_v:
+    case Property::BeamWaist_h:
 	case Property::BeamRayleigh:
 	case Property::BeamDivergence:
 	{
@@ -198,7 +200,9 @@ void GaussianBeamDelegate::setEditorData(QWidget* editor, const QModelIndex& ind
 		spinBox->setValue(value);
 		break;
 	}
-	case Property::BeamWaist:
+    case Property::BeamWaist:
+    case Property::BeamWaist_v:
+    case Property::BeamWaist_h:
 	case Property::BeamWaistPosition:
 	case Property::BeamRayleigh:
 	case Property::BeamDivergence:
@@ -303,7 +307,9 @@ void GaussianBeamDelegate::setModelData(QWidget* editor, QAbstractItemModel* mod
 	switch (column)
 	{
 	case Property::OpticsProperties:
-	case Property::BeamWaist:
+    case Property::BeamWaist:
+    case Property::BeamWaist_v:
+    case Property::BeamWaist_h:
 	case Property::BeamWaistPosition:
 	case Property::BeamRayleigh:
 	case Property::BeamDivergence:

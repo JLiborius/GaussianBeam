@@ -39,7 +39,7 @@ QColor wavelengthColor(double wavelength)
 
 	// Wavelength to rgb conversion
 	if (wavelength < 380.)
-		color = QColor::fromRgbF(1., 0., 1.);
+        color = QColor::fromRgbF(1., 0., 1.);
 	else if (wavelength < 440.)
 		color = QColor::fromRgbF((440.-wavelength)/60., 0., 1.);
 	else if (wavelength < 490.)
