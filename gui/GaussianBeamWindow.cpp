@@ -94,7 +94,8 @@ GaussianBeamWindow::GaussianBeamWindow(const QString& fileName)
 	// Bars
 	m_fileToolBar = addToolBar(tr("File"));
 	m_fileToolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-	m_fileToolBar->addAction(action_New);
+
+    m_fileToolBar->addAction(action_New);
 	m_recentFilesMenu = new QMenu(this);
 	for (int i = 0; i < m_maxRecentFiles; i++)
 	{
@@ -102,16 +103,16 @@ GaussianBeamWindow::GaussianBeamWindow(const QString& fileName)
 		m_recentFileAction[i]->setVisible(false);
 		connect(m_recentFileAction[i], SIGNAL(triggered()), this, SLOT(openRecentFile()));
 		m_recentFilesMenu->addAction(m_recentFileAction[i]);
-	}
-	action_Open->setMenu(m_recentFilesMenu);
-	m_fileToolBar->addAction(action_Open);
-	m_fileToolBar->addAction(action_Save);
+    }
+    action_Open->setMenu(m_recentFilesMenu);
+    m_fileToolBar->addAction(action_Open);
+    m_fileToolBar->addAction(action_Save);
 	m_fileToolBar->addAction(action_SaveAs);
 	m_fileToolBar->addSeparator();
 	m_addOpticsMenu = new QMenu(this);
-	m_addOpticsMenu->setDefaultAction(action_AddLens);
+    m_addOpticsMenu->setDefaultAction(action_AddLens);
 	m_addOpticsMenu->addAction(action_AddLens);
-	m_addOpticsMenu->addAction(action_AddFlatMirror);
+    m_addOpticsMenu->addAction(action_AddFlatMirror);
 	m_addOpticsMenu->addAction(action_AddCurvedMirror);
 	m_addOpticsMenu->addAction(action_AddFlatInterface);
 	m_addOpticsMenu->addAction(action_AddCurvedInterface);

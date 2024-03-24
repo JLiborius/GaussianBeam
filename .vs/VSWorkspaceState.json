@@ -1,7 +1,12 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\gui",
+    "\\src",
+    "\\test",
+    "\\usr",
+    "\\www"
   ],
-  "SelectedNode": "\\GaussianBeam.pro",
+  "SelectedNode": "\\gui\\main.cpp",
   "PreviewInSolutionExplorer": false
 }
