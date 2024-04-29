@@ -35,7 +35,7 @@ GaussianBeamWindow::GaussianBeamWindow(const QString& fileName)
 	m_currentFile = QString();
 
 	setupUi(this);
-	setWindowTitle(QApplication::applicationName());
+    setWindowTitle(QString("Julian"));
 	setWindowIcon(QIcon(":/images/gaussianbeam16.png"));
 
 	// Bench
@@ -68,8 +68,12 @@ GaussianBeamWindow::GaussianBeamWindow(const QString& fileName)
 	m_vOpticsScene = new OpticsScene(m_bench, Vertical, this);
 	m_hOpticsScene->setOtherScene(m_vOpticsScene);
 	m_vOpticsScene->setOtherScene(m_hOpticsScene);
-	m_hOpticsView = new OpticsView(m_hOpticsScene, m_bench);
-	m_vOpticsView = new OpticsView(m_vOpticsScene, m_bench);
+    const QString m_hOpticsViewTitle = QString("Horizontal");
+    const QString m_vOpticsViewTitle = QString("Vertikal");
+    m_hOpticsView = new OpticsView(m_hOpticsScene, m_bench);
+    m_hOpticsView->setWindowTitle(m_hOpticsViewTitle);
+    m_vOpticsView = new OpticsView(m_vOpticsScene, m_bench);
+    m_vOpticsView->setWindowTitle(m_vOpticsViewTitle);
 	m_hOpticsViewEnsemble = createViewEnsemble(m_hOpticsView);
 	m_vOpticsViewEnsemble = createViewEnsemble(m_vOpticsView);
 
