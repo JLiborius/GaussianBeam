@@ -44,11 +44,11 @@
     <name>GaussianBeamWidget</name>
     <message>
         <source>Radius @ 1/eÂ²</source>
-        <translation>Rayon @ 1/e²</translation>
+        <translation type="obsolete">Rayon @ 1/e²</translation>
     </message>
     <message>
         <source>Diameter @ 1/eÂ²</source>
-        <translation>Diamètre @ 1/e²</translation>
+        <translation type="obsolete">Diamètre @ 1/e²</translation>
     </message>
     <message>
         <source>Waist</source>
@@ -220,11 +220,11 @@
     </message>
     <message>
         <source>Cavity</source>
-        <translation>Cavité</translation>
+        <translation type="obsolete">Cavité</translation>
     </message>
     <message>
         <source>Unstable</source>
-        <translation>Instable</translation>
+        <translation type="obsolete">Instable</translation>
     </message>
     <message>
         <source>Aspect</source>
@@ -290,6 +290,14 @@ verticale</translation>
     <message>
         <source>Vertical position</source>
         <translation>Position verticale</translation>
+    </message>
+    <message>
+        <source>Radius @ 1/e²</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Diameter @ 1/e²</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -517,7 +525,7 @@ verticale</translation>
     </message>
     <message>
         <source>Waist</source>
-        <translation>Waist</translation>
+        <translation type="obsolete">Waist</translation>
     </message>
     <message>
         <source>Waist position</source>
@@ -585,7 +593,7 @@ verticale</translation>
     </message>
     <message>
         <source>wâ</source>
-        <translation>w₀</translation>
+        <translation type="obsolete">w₀</translation>
     </message>
     <message>
         <source>zw</source>
@@ -666,6 +674,62 @@ verticale</translation>
     <message>
         <source>Ellipsoidal</source>
         <translation>Ellipsoïdal</translation>
+    </message>
+    <message>
+        <source>Waist_v</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Waist_h</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>w_v</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>w_h</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>createBeam</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>lens</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>thickLens</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>flatMirror</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>curvedMirror</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>flatInterface</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>curvedInterface</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>dielectricSlab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>thermalLens</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>genericABCD</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

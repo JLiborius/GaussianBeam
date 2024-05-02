@@ -339,11 +339,13 @@ OpticsView::OpticsView(QGraphicsScene* scene, OpticsBench* bench)
 	: QGraphicsView(scene)
 	, m_bench(bench)
 {
+
 	setRenderHint(QPainter::Antialiasing);
-	setBackgroundBrush(Qt::white);
+    setBackgroundBrush(Qt::white);
 	m_statusWidget = 0;
 
-	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
 	m_opticsViewProperties = new OpticsViewProperties(this);

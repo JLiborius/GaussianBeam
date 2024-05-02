@@ -35,7 +35,7 @@ GaussianBeamWindow::GaussianBeamWindow(const QString& fileName)
 	m_currentFile = QString();
 
 	setupUi(this);
-	setWindowTitle(QApplication::applicationName());
+    setWindowTitle(QString("Julian"));
 	setWindowIcon(QIcon(":/images/gaussianbeam16.png"));
 
 	// Bench
@@ -68,10 +68,21 @@ GaussianBeamWindow::GaussianBeamWindow(const QString& fileName)
 	m_vOpticsScene = new OpticsScene(m_bench, Vertical, this);
 	m_hOpticsScene->setOtherScene(m_vOpticsScene);
 	m_vOpticsScene->setOtherScene(m_hOpticsScene);
+<<<<<<< HEAD
 	m_hOpticsView = new OpticsView(m_hOpticsScene, m_bench);
 	m_vOpticsView = new OpticsView(m_vOpticsScene, m_bench);
     m_hOpticsViewEnsemble = createViewEnsemble(m_hOpticsView, "Horizontal");
     m_vOpticsViewEnsemble = createViewEnsemble(m_vOpticsView, "Vertical");
+=======
+    const QString m_hOpticsViewTitle = QString("Horizontal");
+    const QString m_vOpticsViewTitle = QString("Vertikal");
+    m_hOpticsView = new OpticsView(m_hOpticsScene, m_bench);
+    m_hOpticsView->setWindowTitle(m_hOpticsViewTitle);
+    m_vOpticsView = new OpticsView(m_vOpticsScene, m_bench);
+    m_vOpticsView->setWindowTitle(m_vOpticsViewTitle);
+	m_hOpticsViewEnsemble = createViewEnsemble(m_hOpticsView);
+	m_vOpticsViewEnsemble = createViewEnsemble(m_vOpticsView);
+>>>>>>> 959f8d4dd2ebeff620d30a745f924277a98a2017
 
 	// Widget
 	m_widget = new GaussianBeamWidget(m_bench, this);
@@ -94,7 +105,8 @@ GaussianBeamWindow::GaussianBeamWindow(const QString& fileName)
 	// Bars
 	m_fileToolBar = addToolBar(tr("File"));
 	m_fileToolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-	m_fileToolBar->addAction(action_New);
+
+    m_fileToolBar->addAction(action_New);
 	m_recentFilesMenu = new QMenu(this);
 	for (int i = 0; i < m_maxRecentFiles; i++)
 	{
@@ -102,16 +114,16 @@ GaussianBeamWindow::GaussianBeamWindow(const QString& fileName)
 		m_recentFileAction[i]->setVisible(false);
 		connect(m_recentFileAction[i], SIGNAL(triggered()), this, SLOT(openRecentFile()));
 		m_recentFilesMenu->addAction(m_recentFileAction[i]);
-	}
-	action_Open->setMenu(m_recentFilesMenu);
-	m_fileToolBar->addAction(action_Open);
-	m_fileToolBar->addAction(action_Save);
+    }
+    action_Open->setMenu(m_recentFilesMenu);
+    m_fileToolBar->addAction(action_Open);
+    m_fileToolBar->addAction(action_Save);
 	m_fileToolBar->addAction(action_SaveAs);
 	m_fileToolBar->addSeparator();
 	m_addOpticsMenu = new QMenu(this);
-	m_addOpticsMenu->setDefaultAction(action_AddLens);
+    m_addOpticsMenu->setDefaultAction(action_AddLens);
 	m_addOpticsMenu->addAction(action_AddLens);
-	m_addOpticsMenu->addAction(action_AddFlatMirror);
+    m_addOpticsMenu->addAction(action_AddFlatMirror);
 	m_addOpticsMenu->addAction(action_AddCurvedMirror);
 	m_addOpticsMenu->addAction(action_AddFlatInterface);
 	m_addOpticsMenu->addAction(action_AddCurvedInterface);
