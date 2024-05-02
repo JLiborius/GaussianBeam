@@ -15,7 +15,7 @@
    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
    Boston, MA 02110-1301, USA.
 */
-
+#include <iostream>
 #include "gui/GaussianBeamWindow.h"
 #include "gui/GaussianBeamWidget.h"
 #include "gui/GaussianBeamModel.h"
@@ -70,8 +70,8 @@ GaussianBeamWindow::GaussianBeamWindow(const QString& fileName)
 	m_vOpticsScene->setOtherScene(m_hOpticsScene);
 	m_hOpticsView = new OpticsView(m_hOpticsScene, m_bench);
 	m_vOpticsView = new OpticsView(m_vOpticsScene, m_bench);
-	m_hOpticsViewEnsemble = createViewEnsemble(m_hOpticsView);
-	m_vOpticsViewEnsemble = createViewEnsemble(m_vOpticsView);
+    m_hOpticsViewEnsemble = createViewEnsemble(m_hOpticsView, "Horizontal");
+    m_vOpticsViewEnsemble = createViewEnsemble(m_vOpticsView, "Vertical");
 
 	// Widget
 	m_widget = new GaussianBeamWidget(m_bench, this);
@@ -164,20 +164,23 @@ GaussianBeamWindow::GaussianBeamWindow(const QString& fileName)
 		openFile(fileName);
 }
 
-QWidget* GaussianBeamWindow::createViewEnsemble(OpticsView* view)
+QWidget* GaussianBeamWindow::createViewEnsemble(OpticsView* view, QString title)
 {
-	QWidget* viewWidget = new QWidget(this);
-	QGridLayout* viewLayout = new QGridLayout();
-	CornerWidget* cornerWidget = new CornerWidget(QColor(245, 245, 200),
-	              ":/images/zoom-best-fit.png", view->propertiesWidget(), this);
-	GraduatedRuller* hRuller = new GraduatedRuller(view, Qt::Horizontal);
-	GraduatedRuller* vRuller = new GraduatedRuller(view, Qt::Vertical);
-	viewLayout->addWidget(view, 0, 0);
-	viewLayout->addWidget(cornerWidget, 1, 1);
-	viewLayout->addWidget(hRuller, 1, 0);
-	viewLayout->addWidget(vRuller, 0, 1);
-	viewLayout->setSpacing(0);
-	viewWidget->setLayout(viewLayout);
+    QWidget* viewWidget = new QWidget(this);
+    QGridLayout* viewLayout = new QGridLayout();
+    QLabel* titleLabel = new QLabel(title, this);
+    CornerWidget* cornerWidget = new CornerWidget(QColor(245, 245, 200),
+                  ":/images/zoom-best-fit.png", view->propertiesWidget(), this);
+    GraduatedRuller* hRuller = new GraduatedRuller(view, Qt::Horizontal);
+    GraduatedRuller* vRuller = new GraduatedRuller(view, Qt::Vertical);
+    viewLayout->addWidget(view, 1, 0);
+    viewLayout->addWidget(titleLabel, 0, 0);
+    viewLayout->addWidget(cornerWidget, 2, 1);
+    viewLayout->addWidget(hRuller, 2, 0);
+    viewLayout->addWidget(vRuller, 1, 1);
+    viewLayout->setSpacing(0);
+    viewWidget->setLayout(viewLayout);
+
 
 	return viewWidget;
 }

@@ -76,11 +76,13 @@ QColor wavelengthColor(double wavelength)
 OpticsScene::OpticsScene(OpticsBench* bench, Orientation orientation, QObject* parent)
 	: QGraphicsScene(parent)
 {
+
 	m_otherScene = 0;
 	m_orientation = orientation;
 	m_beamScale = 100.;
 	m_opticsHeight = 0.06;
 	m_scenesLocked = true;
+
 
 	// Bench connections
 	m_bench = bench;
@@ -353,7 +355,7 @@ OpticsView::OpticsView(QGraphicsScene* scene, OpticsBench* bench)
 	setResizeAnchor(QGraphicsView::AnchorViewCenter);
 
 	setHorizontalRange(0.6);
-	setOrigin(QPointF(-0.1, 0.));
+    setOrigin(QPointF(-0.1, 0.));
 }
 
 void OpticsView::adjustRange()
