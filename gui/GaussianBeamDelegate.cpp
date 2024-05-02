@@ -86,11 +86,11 @@ QWidget *GaussianBeamDelegate::createEditor(QWidget* parent,
 		editor->setMaximum(Utils::infinity);
 		return editor;
 	}
-    case Property::BeamWaist:
     case Property::BeamWaist_v:
     case Property::BeamWaist_h:
-	case Property::BeamRayleigh:
-	case Property::BeamDivergence:
+    case Property::BeamRayleigh_v:
+    case Property::BeamRayleigh_h:
+    case Property::BeamDivergence_v:
 	{
 		QList<EditorProperty> properties;
 		properties << EditorProperty(0., Utils::infinity);
@@ -98,6 +98,14 @@ QWidget *GaussianBeamDelegate::createEditor(QWidget* parent,
 			properties << EditorProperty(0., Utils::infinity);
 		return new PropertyEditor(properties, parent);
 	}
+    case Property::BeamDivergence_h:
+    {
+        QList<EditorProperty> properties;
+        properties << EditorProperty(0., Utils::infinity);
+        if (!m_bench->isSpherical())
+            properties << EditorProperty(0., Utils::infinity);
+        return new PropertyEditor(properties, parent);
+    }
 	case Property::BeamWaistPosition:
 	{
 		QList<EditorProperty> properties;
@@ -204,14 +212,22 @@ void GaussianBeamDelegate::setEditorData(QWidget* editor, const QModelIndex& ind
     case Property::BeamWaist_v:
     case Property::BeamWaist_h:
 	case Property::BeamWaistPosition:
-	case Property::BeamRayleigh:
-	case Property::BeamDivergence:
+    case Property::BeamRayleigh_v:
+    case Property::BeamRayleigh_h:
+    case Property::BeamDivergence_v:
 	{
 		QList<QVariant> values = m_model->data(index, Qt::EditRole).toList();
 		for(int i = 0; i < values.size(); i++)
 			propertyEditor->setValue(i, values[i].toDouble());
 		break;
 	}
+    case Property::BeamDivergence_h:
+    {
+        QList<QVariant> values = m_model->data(index, Qt::EditRole).toList();
+        for(int i = 0; i < values.size(); i++)
+            propertyEditor->setValue(i, values[i].toDouble());
+        break;
+    }
 	case Property::OpticsProperties:
 	{
 		if (optics->type() == CreateBeamType)
@@ -311,12 +327,18 @@ void GaussianBeamDelegate::setModelData(QWidget* editor, QAbstractItemModel* mod
     case Property::BeamWaist_v:
     case Property::BeamWaist_h:
 	case Property::BeamWaistPosition:
-	case Property::BeamRayleigh:
-	case Property::BeamDivergence:
+    case Property::BeamRayleigh_v:
+    case Property::BeamRayleigh_h:
+    case Property::BeamDivergence_v:
 	{
 		model->setData(index, static_cast<PropertyEditor*>(editor)->values());
 		break;
 	}
+    case Property::BeamDivergence_h:
+    {
+        model->setData(index, static_cast<PropertyEditor*>(editor)->values());
+        break;
+    }
 	case Property::OpticsLock:
 	case Property::OpticsOrientation:
 	{
