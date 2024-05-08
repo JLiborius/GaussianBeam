@@ -315,7 +315,7 @@ void GaussianBeamWindow::parseOptics(const QDomElement& element, QMap<int, Optic
 	if (element.tagName() == OpticsName::codedName[CreateBeamType])
 		optics = new CreateBeam(1., 1., 1., "");
 	else if (element.tagName() == OpticsName::codedName[LensType])
-		optics = new Lens(1., 1., "");
+        optics = new Lens(1., 1., 1., "");
 	else if (element.tagName() == OpticsName::codedName[FlatMirrorType])
 		optics = new FlatMirror(1., "");
 	else if (element.tagName() == OpticsName::codedName[CurvedMirrorType])
@@ -354,8 +354,8 @@ void GaussianBeamWindow::parseOptics(const QDomElement& element, QMap<int, Optic
 			lockTree[id] = child.text().toInt();
 		else if (child.tagName() == "width")
 			optics->setWidth(child.text().toDouble());
-		else if (child.tagName() == "focal")
-			dynamic_cast<Lens*>(optics)->setFocal(child.text().toDouble());
+        else if (child.tagName() == "focals")
+            dynamic_cast<Lens*>(optics)->setFocals(child.text().split("/")[0].toDouble(), child.text().split("/")[1].toDouble());
 		else if (child.tagName() == "curvatureRadius")
 			dynamic_cast<CurvedMirror*>(optics)->setCurvatureRadius(child.text().toDouble());
 		else if (child.tagName() == "indexRatio")

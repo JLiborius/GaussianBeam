@@ -408,7 +408,7 @@ void OpticsBench::addOptics(OpticsType opticsType, int index)
 	Optics* optics;
 
 	if (opticsType == LensType)
-		optics = new Lens(0.1, 0.0, name);
+        optics = new Lens(0.1, 0.1, 0.0, name);
 	else if (opticsType == FlatMirrorType)
 	{
 		optics = new FlatMirror(0.0, name);

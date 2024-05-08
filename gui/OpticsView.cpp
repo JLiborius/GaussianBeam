@@ -654,7 +654,7 @@ void OpticsItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option
 	}
 	else if (m_optics->type() == LensType)
 	{
-		if (dynamic_cast<const Lens*>(m_optics)->focal() >= 0.)
+        if (dynamic_cast<const Lens*>(m_optics)->focal_vertical() >= 0.)
 		{
 			path.moveTo(0., rect.top());
 			path.arcTo(rect, 90., 180.);

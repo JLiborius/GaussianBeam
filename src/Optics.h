@@ -20,7 +20,7 @@
 #define OPTICS_H
 
 #include "GaussianBeam.h"
-
+#include <iostream>
 #include <list>
 #include <string>
 
@@ -326,22 +326,35 @@ class Lens : public ABCD
 {
 public:
 	/// Constructor
-	Lens(double focal, double position, std::string name = "") : ABCD(LensType, position, name) , m_focal(focal) {}
+    Lens(double focal_h, double focal_v, double position, std::string name = "") : ABCD(LensType, position, name), m_focal_vertical(focal_v), m_focal_horizontal(focal_h) {if (focal_v != focal_h) setOrientation(Ellipsoidal);}
 	virtual Lens* clone() const { return new Lens(*this); }
 
 // Inherited
 public:
-	virtual bool isOrientable(Orientation orientation) const { return (orientation != Ellipsoidal); }
-	virtual double C(Orientation orientation) const { return isAligned(orientation) ? -1./focal() : ABCD::C(orientation); }
+    virtual bool isOrientable(Orientation orientation) const { return true; }
+    virtual double C(Orientation orientation) const
+    {
+        if (orientation == Vertical)
+            return -1./focal_vertical();
+        else if (orientation == Horizontal)
+            return -1./focal_horizontal();
+        else if (orientation == Spherical)
+            return -1./focal_vertical();
+
+        return ABCD::C(orientation);
+
+        // return isAligned(orientation) ? -1./focal_vertical() : ABCD::C(orientation);
+    }
 
 public:
 	/// @return the lens focal length
-	double focal() const { return m_focal; }
+    double focal_vertical() const { return m_focal_vertical;}
+    double focal_horizontal() const { return m_focal_horizontal;}
 	/// Set the lens focal
-	void setFocal(double focal);
-
+    void setFocals(double focal_h, double focal_v);
 private:
-	double m_focal;
+    double m_focal_vertical;
+    double m_focal_horizontal;
 };
 
 #if 0

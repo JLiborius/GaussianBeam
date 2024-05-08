@@ -92,8 +92,10 @@ QVariant GaussianBeamModel::data(const QModelIndex& index, int role) const
 		}
 		else if (optics->type() == LensType)
 		{
-			return QString("f = ") + QString::number(dynamic_cast<const Lens*>(optics)->focal()*Unit(UnitFocal).divider())
-			                       + Unit(UnitFocal).string();
+            return QString("f_h = ") + QString::number(dynamic_cast<const Lens*>(optics)->focal_horizontal()*Unit(UnitFocal).divider())
+                   + Unit(UnitFocal).string() +
+                   QString("\nf_v = ") + QString::number(dynamic_cast<const Lens*>(optics)->focal_vertical()*Unit(UnitFocal).divider())
+                   + Unit(UnitFocal).string();
 		}
 		else if (optics->type() == CurvedMirrorType)
 		{
@@ -279,7 +281,11 @@ bool GaussianBeamModel::setData(const QModelIndex& index, const QVariant& value,
 			createBeam->setBeam(beam);
 		}
 		else if (optics->type() == LensType)
-			dynamic_cast<Lens*>(optics)->setFocal(value.toList()[0].toDouble()*Unit(UnitFocal).multiplier());
+        {
+            dynamic_cast<Lens*>(optics)->setFocals(value.toList()[0].toDouble()*Unit(UnitFocal).multiplier(),
+                                                   value.toList()[1].toDouble()*Unit(UnitFocal).multiplier());
+
+        }
 		else if (optics->type() == CurvedMirrorType)
 			dynamic_cast<CurvedMirror*>(optics)->setCurvatureRadius(value.toList()[0].toDouble()*Unit(UnitCurvature).multiplier());
 		else if (optics->type() == FlatInterfaceType)
