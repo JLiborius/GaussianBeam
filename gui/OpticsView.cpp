@@ -662,7 +662,7 @@ void OpticsItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option
 		}
 		else
 		{
-            path.moveTo(0, rect.top());
+            path.moveTo(0., rect.top());
 			path.arcTo(rightRect, 90., 180.);
 			path.arcTo(leftRect, 270., 180.);
 		}
