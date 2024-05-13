@@ -80,7 +80,7 @@ OpticsScene::OpticsScene(OpticsBench* bench, Orientation orientation, QObject* p
 	m_otherScene = 0;
 	m_orientation = orientation;
 	m_beamScale = 100.;
-	m_opticsHeight = 0.06;
+    m_opticsHeight = 0.06;
 	m_scenesLocked = true;
 
 
@@ -356,7 +356,7 @@ OpticsView::OpticsView(QGraphicsScene* scene, OpticsBench* bench)
 
 	setResizeAnchor(QGraphicsView::AnchorViewCenter);
 
-	setHorizontalRange(0.6);
+    setHorizontalRange(0.9);
     setOrigin(QPointF(-0.1, 0.));
 }
 
@@ -574,7 +574,7 @@ QRectF OpticsItem::boundingRect() const
 	const double h = 0.5*opticsScene->opticsHeight();
 
 	if (m_optics->width() == 0.)
-		bounding = QRectF(QPointF(-0.15*h, -h), QSizeF(0.30*h, 2.*h));
+        bounding = QRectF(QPointF(-0.15*h, -h), QSizeF(0.30*h, 2.*h));
 	else
 		bounding = QRectF(QPointF(0., -h), QSizeF(m_optics->width(), 2.*h));
 
@@ -656,13 +656,13 @@ void OpticsItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option
 	{
         if (dynamic_cast<const Lens*>(m_optics)->focal_vertical() >= 0.)
 		{
-			path.moveTo(0., rect.top());
+            path.moveTo(rect.center().x(), rect.top());
 			path.arcTo(rect, 90., 180.);
 			path.arcTo(rect, 270., 180.);
 		}
 		else
 		{
-			path.moveTo(leftRect.center().x(), rect.top());
+            path.moveTo(0, rect.top());
 			path.arcTo(rightRect, 90., 180.);
 			path.arcTo(leftRect, 270., 180.);
 		}

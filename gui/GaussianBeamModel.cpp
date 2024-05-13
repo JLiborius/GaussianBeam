@@ -145,42 +145,32 @@ QVariant GaussianBeamModel::data(const QModelIndex& index, int role) const
 			}
 		}
 	}
-    else if (column == Property::BeamWaist_v)
+    else if (column == Property::BeamWaist)
     {
-        values << m_bench->beam(row)->waist(Vertical)*Unit(UnitWaist).divider();
+        values << m_bench->beam(row)->waist(Horizontal)*Unit(UnitWaist).divider();
+        if (!m_bench->isSpherical()) values << m_bench->beam(row)->waist(Vertical)*Unit(UnitWaist).divider();
     }
-    else if (column == Property::BeamWaist_h)
-	{
-		values << m_bench->beam(row)->waist(Horizontal)*Unit(UnitWaist).divider();
-	}
+
 	else if (column == Property::BeamWaistPosition)
 	{
 		values << m_bench->beam(row)->waistPosition(Horizontal)*Unit(UnitPosition).divider();
 		if (!m_bench->isSpherical()) values << m_bench->beam(row)->waistPosition(Vertical)*Unit(UnitPosition).divider();
 	}
-    else if (column == Property::BeamRayleigh_h)
+    else if (column == Property::BeamRayleigh)
 	{
 		values << m_bench->beam(row)->rayleigh(Horizontal)*Unit(UnitRayleigh).divider();
-
+        if (!m_bench->isSpherical()) values << m_bench->beam(row)->rayleigh(Vertical)*Unit(UnitRayleigh).divider();
 	}
-    else if (column == Property::BeamRayleigh_v)
-    {
-        values << m_bench->beam(row)->rayleigh(Vertical)*Unit(UnitRayleigh).divider();
-    }
-    else if (column == Property::BeamDivergence_h)
+    else if (column == Property::BeamDivergence)
 	{
 		values << m_bench->beam(row)->divergence(Horizontal)*Unit(UnitDivergence).divider();
+        if (!m_bench->isSpherical()) values << m_bench->beam(row)->divergence(Vertical)*Unit(UnitDivergence).divider();
 	}
-    else if (column == Property::BeamDivergence_v)
+    else if (column == Property::OpticsSensitivity)
     {
-        values << m_bench->beam(row)->divergence(Vertical)*Unit(UnitDivergence).divider();
-    }
-    else if (column == Property::OpticsSensitivity_h)
 		values << fabs(m_bench->sensitivity(row))*100./sqr(Unit(UnitPosition).divider());
-
-    else if (column == Property::OpticsSensitivity_v)
-        values << fabs(m_bench->sensitivity(row))*100./sqr(Unit(UnitPosition).divider());
-
+        if (!m_bench->isSpherical()) values << fabs(m_bench->sensitivity(row))*100./sqr(Unit(UnitPosition).divider());
+    }
 	else if (column == Property::OpticsName)
 	{
 		return QString::fromUtf8(optics->name().c_str());
@@ -230,7 +220,7 @@ QVariant GaussianBeamModel::headerData(int section, Qt::Orientation orientation,
 			if (Property::unit[type] != UnitLess)
 				header += " (" + Unit(Property::unit[type]).string(false) + ")";
 			/// @todo handle this special case in a more general way
-            if (type == Property::OpticsSensitivity_v || type == Property::OpticsSensitivity_h)
+            if (type == Property::OpticsSensitivity)
 				header += " (%/" + Unit(UnitPosition).string(false) + tr("²") + ")";
 			return breakString(header);
 		}
@@ -343,34 +333,20 @@ bool GaussianBeamModel::setData(const QModelIndex& index, const QVariant& value,
 			beam.setWaistPosition(value.toList()[i].toDouble()*Unit(UnitPosition).multiplier(), orientations[i]);
 			m_bench->setBeam(beam, row);
 		}
-    else if (column == Property::BeamRayleigh_v)
+    else if (column == Property::BeamRayleigh)
 		for (int i = 0; i < orientations.size(); i++)
 		{
 			Beam beam = *m_bench->beam(row);
 			beam.setRayleigh(value.toList()[i].toDouble()*Unit(UnitRayleigh).multiplier(), orientations[i]);
 			m_bench->setBeam(beam, row);
 		}
-    else if (column == Property::BeamRayleigh_h)
-        for (int i = 0; i < orientations.size(); i++)
-        {
-            Beam beam = *m_bench->beam(row);
-            beam.setRayleigh(value.toList()[i].toDouble()*Unit(UnitRayleigh).multiplier(), orientations[i]);
-            m_bench->setBeam(beam, row);
-        }
-    else if (column == Property::BeamDivergence_v)
+    else if (column == Property::BeamDivergence)
 		for (int i = 0; i < orientations.size(); i++)
 		{
 			Beam beam = *m_bench->beam(row);
 			beam.setDivergence(value.toList()[i].toDouble()*Unit(UnitDivergence).multiplier(), orientations[i]);
 			m_bench->setBeam(beam, row);
 		}
-    else if (column == Property::BeamDivergence_h)
-        for (int i = 0; i < orientations.size(); i++)
-        {
-            Beam beam = *m_bench->beam(row);
-            beam.setDivergence(value.toList()[i].toDouble()*Unit(UnitDivergence).multiplier(), orientations[i]);
-            m_bench->setBeam(beam, row);
-        }
 	else if (column == Property::OpticsName)
 	{
 		Optics* optics = m_bench->opticsForPropertyChange(row);
@@ -430,8 +406,8 @@ Qt::ItemFlags GaussianBeamModel::flags(const QModelIndex& index) const
 		(column == Property::OpticsLock) ||
 		(column == Property::BeamWaist) ||
 		(column == Property::BeamWaistPosition) ||
-        (column == Property::BeamRayleigh_v) ||
-        (column == Property::BeamDivergence_v) ||
+        (column == Property::BeamRayleigh) ||
+        (column == Property::BeamDivergence) ||
 		((column == Property::OpticsProperties)  && (optics->type() != FlatMirrorType)) ||
 		((column == Property::OpticsAngle)       && (optics->isRotable())) ||
 		((column == Property::OpticsOrientation) && (optics->isOrientable())))

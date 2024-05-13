@@ -82,7 +82,7 @@ GaussianBeamWindow::GaussianBeamWindow(const QString& fileName)
 	m_wavelengthSpinBox->setDecimals(0);
 	m_wavelengthSpinBox->setSuffix(" nm");
 	m_wavelengthSpinBox->setRange(1., 999999.);
-	m_wavelengthSpinBox->setValue(532.);
+    m_wavelengthSpinBox->setValue(460.);
 	m_wavelengthSpinBox->setSingleStep(10.);
 	wavelengthLayout->addWidget(m_wavelengthSpinBox);
 	wavelengthLayout->addWidget(wavelengthLabel);
@@ -150,8 +150,14 @@ GaussianBeamWindow::GaussianBeamWindow(const QString& fileName)
 	readSettings();
 	onOpticsBenchSphericityChanged();
 
-	for (int i = 0; i < 2; i++)
-		m_bench->addOptics(LensType, m_bench->nOptics());
+    // default lenses are added
+    Optics* optics_0 = new Lens(0.15, 0.15, 0.150, "L0");
+    Optics* optics_1 = new Lens(-0.1, -0.1, 0.220, "L1");
+    m_bench->addOptics(optics_0, m_bench->nOptics());
+    m_bench->addOptics(optics_1, m_bench->nOptics());
+    /*for (int i = 0; i < 2; i++)
+        m_bench->addOptics(LensType, m_bench->nOptics());
+    */
 /*
 	Cavity& cavity = m_bench->cavity();
 	cavity.addOptics(dynamic_cast<const ABCD*>(m_bench->optics(1)));
@@ -229,7 +235,8 @@ void GaussianBeamWindow::writeSettings()
 	QSettings settings;
 	settings.setValue("GaussianBeamWindow/size", size());
 	settings.setValue("GaussianBeamWindow/pos", pos());
-	settings.setValue("GaussianBeamWindow/wavelength", m_bench->wavelength());
+    // hier wird die wavelength der letzten session gespeichert und beim nächsten aufruf verwendet
+    settings.setValue("GaussianBeamWindow/wavelength", m_bench->wavelength());
 }
 
 void GaussianBeamWindow::readSettings()

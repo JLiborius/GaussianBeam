@@ -86,19 +86,9 @@ QWidget *GaussianBeamDelegate::createEditor(QWidget* parent,
 		editor->setMaximum(Utils::infinity);
 		return editor;
 	}
-    case Property::BeamWaist_v:
-    case Property::BeamWaist_h:
-    case Property::BeamRayleigh_v:
-    case Property::BeamRayleigh_h:
-    case Property::BeamDivergence_v:
-	{
-		QList<EditorProperty> properties;
-		properties << EditorProperty(0., Utils::infinity);
-		if (!m_bench->isSpherical())
-			properties << EditorProperty(0., Utils::infinity);
-		return new PropertyEditor(properties, parent);
-	}
-    case Property::BeamDivergence_h:
+    case Property::BeamWaist:
+    case Property::BeamRayleigh:
+    case Property::BeamDivergence:
     {
         QList<EditorProperty> properties;
         properties << EditorProperty(0., Utils::infinity);
@@ -121,8 +111,9 @@ QWidget *GaussianBeamDelegate::createEditor(QWidget* parent,
 			properties << EditorProperty(0., Utils::infinity, "n = ")
 			           << EditorProperty(1., Utils::infinity, tr("M²") + " = ");
 		else if (optics->type() == LensType)
-            properties << EditorProperty(-Utils::infinity, Utils::infinity, "f_v = ", Unit(UnitFocal).string())
-                       << EditorProperty(-Utils::infinity, Utils::infinity, "f_h = ", Unit(UnitFocal).string());
+            properties << EditorProperty(-Utils::infinity, Utils::infinity, "f_h = ", Unit(UnitFocal).string())
+                       << EditorProperty(-Utils::infinity, Utils::infinity, "f_v = ", Unit(UnitFocal).string());
+
 		else if (optics->type() == CurvedMirrorType)
 			properties << EditorProperty(-Utils::infinity, Utils::infinity, "R = ", Unit(UnitCurvature).string());
 		else if (optics->type() == FlatInterfaceType)
@@ -210,25 +201,15 @@ void GaussianBeamDelegate::setEditorData(QWidget* editor, const QModelIndex& ind
 		break;
 	}
     case Property::BeamWaist:
-    case Property::BeamWaist_v:
-    case Property::BeamWaist_h:
 	case Property::BeamWaistPosition:
-    case Property::BeamRayleigh_v:
-    case Property::BeamRayleigh_h:
-    case Property::BeamDivergence_v:
+    case Property::BeamRayleigh:
+    case Property::BeamDivergence:
 	{
 		QList<QVariant> values = m_model->data(index, Qt::EditRole).toList();
 		for(int i = 0; i < values.size(); i++)
 			propertyEditor->setValue(i, values[i].toDouble());
 		break;
 	}
-    case Property::BeamDivergence_h:
-    {
-        QList<QVariant> values = m_model->data(index, Qt::EditRole).toList();
-        for(int i = 0; i < values.size(); i++)
-            propertyEditor->setValue(i, values[i].toDouble());
-        break;
-    }
 	case Property::OpticsProperties:
 	{
 		if (optics->type() == CreateBeamType)
@@ -239,8 +220,8 @@ void GaussianBeamDelegate::setEditorData(QWidget* editor, const QModelIndex& ind
 		}
 		else if (optics->type() == LensType)
         {
-            propertyEditor->setValue(0, dynamic_cast<const Lens*>(optics)->focal_vertical()*Unit(UnitFocal).divider());
-            propertyEditor->setValue(1, dynamic_cast<const Lens*>(optics)->focal_horizontal()*Unit(UnitFocal).divider());
+            propertyEditor->setValue(0, dynamic_cast<const Lens*>(optics)->focal_horizontal()*Unit(UnitFocal).divider());
+            propertyEditor->setValue(1, dynamic_cast<const Lens*>(optics)->focal_vertical()*Unit(UnitFocal).divider());
         }
 		else if (optics->type() == CurvedMirrorType)
 			propertyEditor->setValue(0, dynamic_cast<const CurvedMirror*>(optics)->curvatureRadius()*Unit(UnitCurvature).divider());
@@ -328,21 +309,13 @@ void GaussianBeamDelegate::setModelData(QWidget* editor, QAbstractItemModel* mod
 	{
 	case Property::OpticsProperties:
     case Property::BeamWaist:
-    case Property::BeamWaist_v:
-    case Property::BeamWaist_h:
 	case Property::BeamWaistPosition:
-    case Property::BeamRayleigh_v:
-    case Property::BeamRayleigh_h:
-    case Property::BeamDivergence_v:
+    case Property::BeamRayleigh:
+    case Property::BeamDivergence:
 	{
 		model->setData(index, static_cast<PropertyEditor*>(editor)->values());
 		break;
 	}
-    case Property::BeamDivergence_h:
-    {
-        model->setData(index, static_cast<PropertyEditor*>(editor)->values());
-        break;
-    }
 	case Property::OpticsLock:
 	case Property::OpticsOrientation:
 	{

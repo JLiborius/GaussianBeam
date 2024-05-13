@@ -51,15 +51,11 @@ void initNames(QApplication* app)
 	Property::fullName.insert(Property::OpticsPosition,         app->translate("Names", "Position"));
 	Property::fullName.insert(Property::OpticsRelativePosition, app->translate("Names", "Relative position"));
 	Property::fullName.insert(Property::OpticsProperties,       app->translate("Names", "Properties"));
-    Property::fullName.insert(Property::BeamWaist_v,            app->translate("Names", "Waist_v"));
-    Property::fullName.insert(Property::BeamWaist_h,            app->translate("Names", "Waist_h"));
+    Property::fullName.insert(Property::BeamWaist,            app->translate("Names", "Waist"));
 	Property::fullName.insert(Property::BeamWaistPosition,      app->translate("Names", "Waist position"));
-    Property::fullName.insert(Property::BeamRayleigh_v,           app->translate("Names", "Rayleigh range vertical"));
-    Property::fullName.insert(Property::BeamRayleigh_h,           app->translate("Names", "Rayleigh range horizontal"));
-    Property::fullName.insert(Property::BeamDivergence_v,         app->translate("Names", "Divergence vertical"));
-    Property::fullName.insert(Property::BeamDivergence_h,         app->translate("Names", "Divergence horizontal"));
-    Property::fullName.insert(Property::OpticsSensitivity_v,      app->translate("Names", "Sensitivity vertical"));
-    Property::fullName.insert(Property::OpticsSensitivity_h,      app->translate("Names", "Sensitivity horizontal"));
+    Property::fullName.insert(Property::BeamRayleigh,           app->translate("Names", "Rayleigh range vertical"));
+    Property::fullName.insert(Property::BeamDivergence,         app->translate("Names", "Divergence vertical"));
+    Property::fullName.insert(Property::OpticsSensitivity,      app->translate("Names", "Sensitivity vertical"));
 	Property::fullName.insert(Property::OpticsName,             app->translate("Names", "Name"));
 	Property::fullName.insert(Property::OpticsLock,             app->translate("Names", "Lock"));
 #ifdef ANGLE
@@ -79,15 +75,11 @@ void initNames(QApplication* app)
 	Property::shortName.insert(Property::OpticsPosition,         app->translate("Names", "z"));
 	Property::shortName.insert(Property::OpticsRelativePosition, app->translate("Names", "zr"));
 	Property::shortName.insert(Property::OpticsProperties,       app->translate("Names", "Prop."));
-    Property::shortName.insert(Property::BeamWaist_v,            app->translate("Names", "w_v"));
-    Property::shortName.insert(Property::BeamWaist_h,            app->translate("Names", "w_h"));
+    Property::shortName.insert(Property::BeamWaist,            app->translate("Names", "w"));
 	Property::shortName.insert(Property::BeamWaistPosition,      app->translate("Names", "zw"));
-    Property::shortName.insert(Property::BeamRayleigh_v,           app->translate("Names", "z₀"));
-    Property::shortName.insert(Property::BeamRayleigh_h,           app->translate("Names", "z₀"));
-    Property::shortName.insert(Property::BeamDivergence_v,         app->translate("Names", "Θ₀"));
-    Property::shortName.insert(Property::BeamDivergence_h,         app->translate("Names", "Θ₀"));
-    Property::shortName.insert(Property::OpticsSensitivity_v,      app->translate("Names", "Sens. v"));
-    Property::shortName.insert(Property::OpticsSensitivity_h,      app->translate("Names", "Sens. h"));
+    Property::shortName.insert(Property::BeamRayleigh,           app->translate("Names", "z₀"));
+    Property::shortName.insert(Property::BeamDivergence,         app->translate("Names", "Θ₀"));
+    Property::shortName.insert(Property::OpticsSensitivity,      app->translate("Names", "Sens"));
 	Property::shortName.insert(Property::OpticsName,             app->translate("Names", "Name"));
 	Property::shortName.insert(Property::OpticsLock,             app->translate("Names", "Lock"));
 #ifdef ANGLE
@@ -107,15 +99,11 @@ void initNames(QApplication* app)
 	Property::unit.insert(Property::OpticsPosition,         UnitPosition);
 	Property::unit.insert(Property::OpticsRelativePosition, UnitPosition);
 	Property::unit.insert(Property::OpticsProperties,       UnitLess);
-    Property::unit.insert(Property::BeamWaist_v,            UnitWaist);
-    Property::unit.insert(Property::BeamWaist_h,            UnitWaist);
+    Property::unit.insert(Property::BeamWaist,            UnitWaist);
 	Property::unit.insert(Property::BeamWaistPosition,      UnitPosition);
-    Property::unit.insert(Property::BeamRayleigh_v,           UnitRayleigh);
-    Property::unit.insert(Property::BeamRayleigh_h,           UnitRayleigh);
-    Property::unit.insert(Property::BeamDivergence_v,         UnitDivergence);
-    Property::unit.insert(Property::BeamDivergence_h,         UnitDivergence);
-    Property::unit.insert(Property::OpticsSensitivity_v,      UnitLess);//app->translate(       "Sensitivity") + "\n(%/" + Unit(UnitPosition).string(false) + tr("²") + ")";
-    Property::unit.insert(Property::OpticsSensitivity_h,      UnitLess);//app->translate(       "Sensitivity") + "\n(%/" + Unit(UnitPosition).string(false) + tr("²") + ")";
+    Property::unit.insert(Property::BeamRayleigh,           UnitRayleigh);
+    Property::unit.insert(Property::BeamDivergence,         UnitDivergence);
+    Property::unit.insert(Property::OpticsSensitivity,      UnitLess);//app->translate(       "Sensitivity") + "\n(%/" + Unit(UnitPosition).string(false) + tr("²") + ")";
     Property::unit.insert(Property::OpticsName,             UnitLess);
 	Property::unit.insert(Property::OpticsLock,             UnitLess);
 #ifdef ANGLE

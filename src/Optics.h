@@ -326,7 +326,7 @@ class Lens : public ABCD
 {
 public:
 	/// Constructor
-    Lens(double focal_h, double focal_v, double position, std::string name = "") : ABCD(LensType, position, name), m_focal_vertical(focal_v), m_focal_horizontal(focal_h) {if (focal_v != focal_h) setOrientation(Ellipsoidal);}
+    Lens(double focal_h, double focal_v, double position, std::string name = "") : ABCD(LensType, position, name), m_focal_vertical(focal_v), m_focal_horizontal(focal_h) {if (focal_h != focal_v) setOrientation(Ellipsoidal);}
 	virtual Lens* clone() const { return new Lens(*this); }
 
 // Inherited

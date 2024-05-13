@@ -27,9 +27,9 @@
 namespace Property
 {
 enum  Type {BeamPosition = 0, BeamRadius, BeamDiameter, BeamCurvature, BeamGouyPhase, BeamDistanceToWaist,
-            BeamParameter,BeamWaist_v, BeamWaist_h, BeamWaist, BeamWaistPosition, BeamRayleigh_v, BeamRayleigh_h, BeamDivergence_v, BeamDivergence_h, Index,
+            BeamParameter, BeamWaist, BeamWaistPosition, BeamRayleigh, BeamDivergence, Index,
             OpticsType, OpticsPosition, OpticsRelativePosition, OpticsProperties, OpticsName,
-            OpticsLock, OpticsSensitivity_v, OpticsSensitivity_h, OpticsAngle, OpticsOrientation};
+            OpticsLock, OpticsSensitivity, OpticsAngle, OpticsOrientation};
 }
 
 enum  Orientation {Spherical = 0, Horizontal = 1,  Vertical = 2, Ellipsoidal = 3};

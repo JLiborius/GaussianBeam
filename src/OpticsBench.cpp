@@ -128,9 +128,9 @@ OpticsBench::~OpticsBench()
 
 void OpticsBench::resetDefaultValues()
 {
-	m_wavelength = 461e-9;
+    m_wavelength = 460e-9;
 	/// @todo better vertical boundaries
-	m_boundary = Rect(-0.1, -0.2, 0.7, 0.2);
+    m_boundary = Rect(-0.1, -0.2, 0.9, 0.2);
 
 	m_targetOverlap = 0.95;
 	m_targetOrientation = Spherical;
@@ -150,7 +150,8 @@ void OpticsBench::clear()
 
 void OpticsBench::populateDefault()
 {
-	CreateBeam* inputBeam = new CreateBeam(180e-6, 10e-3, 1., "w0");
+    // CreateBeam* inputBeam = new CreateBeam(180e-6, 10e-3, 1., "w0");
+    CreateBeam* inputBeam = new CreateBeam(500e-6, 0., 1., "w0");
 	inputBeam->setAbsoluteLock(true);
 	addOptics(inputBeam, 0);
 
