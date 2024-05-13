@@ -656,13 +656,13 @@ void OpticsItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option
 	{
         if (dynamic_cast<const Lens*>(m_optics)->focal_vertical() >= 0.)
 		{
-            path.moveTo(rect.center().x(), rect.top());
+            path.moveTo(0., rect.top());
 			path.arcTo(rect, 90., 180.);
 			path.arcTo(rect, 270., 180.);
 		}
 		else
 		{
-            path.moveTo(0., rect.top());
+            path.moveTo(leftRect.center().x(), rect.top());
 			path.arcTo(rightRect, 90., 180.);
 			path.arcTo(leftRect, 270., 180.);
 		}
@@ -887,18 +887,20 @@ void BeamItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
 		drawLowerBeamSegment(nextPos = m_startLowerCache, pos, horizontalScale, 1, beamPolygon); pos = nextPos;
 	}
 	painter->drawConvexPolygon(beamPolygon);
-/*
+
 	// Waist label
 	QPen textPen(Qt::black);
 	if (m_drawText)
 	{
 		painter->setPen(textPen);
 		QPointF waistTop(waistPosition, - waist);
-		painter->drawLine(QPointF(waistPosition, 0.), waistTop);
-		QString text; text.setNum(round(waist*Units::getUnit(UnitWaist).divider()));
-		QRectF textRect(0., 0., 100., 15.);
-		textRect.moveCenter(waistTop - QPointF(0., 15.));
+        painter->drawLine(QPointF(waistPosition, 0.), waistTop);
+        QString text;
+        text.setNum(round(waist * Unit(UnitWaist).divider()));
+        QRectF textRect(0., 0., 100., 15.);
+        textRect.moveCenter(waistTop - QPointF(0., 15.));
+
 		painter->drawText(textRect, Qt::AlignHCenter | Qt::AlignBottom, text);
 	}
-*/
+
 }

@@ -431,7 +431,7 @@ StatusPropertySelector::StatusPropertySelector(QWidget* parent)
 	defaultPropertyList << Property::BeamPosition << Property::BeamRadius << Property::BeamDiameter
 	                    << Property::BeamCurvature << Property::BeamGouyPhase
 	                    << Property::BeamDistanceToWaist << Property::BeamParameter << Property::Index;
-	defaultCheckList << true << true << false << true << false << false << false << false;
+    defaultCheckList << true << true << false << true << false << true << false << false;
 
 	readSettings(defaultPropertyList, defaultCheckList);
 }
