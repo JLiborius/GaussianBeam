@@ -895,12 +895,6 @@ void BeamItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
 		painter->setPen(textPen);
 		QPointF waistTop(waistPosition, - waist);
         painter->drawLine(QPointF(waistPosition, 0.), waistTop);
-        QString text;
-        text.setNum(round(waist * Unit(UnitWaist).divider()));
-        QRectF textRect(0., 0., 100., 15.);
-        textRect.moveCenter(waistTop - QPointF(0., 15.));
-
-		painter->drawText(textRect, Qt::AlignHCenter | Qt::AlignBottom, text);
 	}
 
 }
