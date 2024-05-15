@@ -295,10 +295,15 @@ void Dielectric::setIndexRatio(double indexRatio)
 /////////////////////////////////////////////////
 // CurvedInterface class
 
-void CurvedInterface::setSurfaceRadius(double surfaceRadius)
+void CurvedInterface::setSurfaceRadii(double surfaceRadius_h, double surfaceRadius_v)
 {
-	if (surfaceRadius != 0.)
-		m_surfaceRadius = surfaceRadius;
+    if ((surfaceRadius_h != 0.) && (surfaceRadius_v != 0.))
+    {
+        m_surfaceRadius_h = surfaceRadius_h;
+        m_surfaceRadius_v = surfaceRadius_v;
+        if (m_surfaceRadius_h != m_surfaceRadius_v)
+            setOrientation(Ellipsoidal);
+    }
 }
 
 /////////////////////////////////////////////////

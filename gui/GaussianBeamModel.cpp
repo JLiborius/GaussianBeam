@@ -110,8 +110,10 @@ QVariant GaussianBeamModel::data(const QModelIndex& index, int role) const
 		{
 			const CurvedInterface* interface = dynamic_cast<const CurvedInterface*>(optics);
 			return QString("n2/n1 = ") + QString::number(interface->indexRatio()) +
-			       QString("\nR = ") + QString::number(interface->surfaceRadius()*Unit(UnitCurvature).divider())
-			                       + Unit(UnitCurvature).string();
+                   QString("\nR_h = ") + QString::number(interface->surfaceRadius_horizontal()*Unit(UnitCurvature).divider())
+                                   + Unit(UnitCurvature).string() +
+                   QString("\nR_v = ") + QString::number(interface->surfaceRadius_vertical()*Unit(UnitCurvature).divider()) +
+                   Unit(UnitCurvature).string();
 		}
 		else if (optics->type() == DielectricSlabType)
 		{
@@ -284,7 +286,8 @@ bool GaussianBeamModel::setData(const QModelIndex& index, const QVariant& value,
 		{
 			CurvedInterface* curvedInterfaceOptics = dynamic_cast<CurvedInterface*>(optics);
 			curvedInterfaceOptics->setIndexRatio(value.toList()[0].toDouble());
-			curvedInterfaceOptics->setSurfaceRadius(value.toList()[1].toDouble()*Unit(UnitCurvature).multiplier());
+            curvedInterfaceOptics->setSurfaceRadii(value.toList()[1].toDouble()*Unit(UnitCurvature).multiplier(),
+                                                   value.toList()[2].toDouble()*Unit(UnitCurvature).multiplier());
 		}
 		else if (optics->type() == DielectricSlabType)
 		{

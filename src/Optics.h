@@ -339,7 +339,7 @@ public:
         else if (orientation == Horizontal)
             return -1./focal_horizontal();
         else if (orientation == Spherical)
-            return -1./focal_vertical();
+            return -1./focal_horizontal();
 
         return ABCD::C(orientation);
 
@@ -441,22 +441,35 @@ class CurvedInterface : public Interface
 {
 public:
 	/// Constructor
-	CurvedInterface(double surfaceRadius, double indexRatio, double position, std::string name = "")
-		: Interface(CurvedInterfaceType, indexRatio, position, name), m_surfaceRadius(surfaceRadius) {}
+    CurvedInterface(double surfaceRadius_h, double surfaceRadius_v, double indexRatio, double position, std::string name = "")
+        : Interface(CurvedInterfaceType, indexRatio, position, name), m_surfaceRadius_h(surfaceRadius_h), m_surfaceRadius_v(surfaceRadius_v) {if (surfaceRadius_h != surfaceRadius_v) setOrientation(Ellipsoidal);}
 	virtual CurvedInterface* clone() const { return new CurvedInterface(*this); }
 
 public:
-	virtual bool isOrientable(Orientation orientation) const { return (orientation != Ellipsoidal); }
-	virtual double C(Orientation orientation) const { return isAligned(orientation) ? (1./indexRatio()-1.)/surfaceRadius() : ABCD::C(orientation); }
+    virtual bool isOrientable(Orientation orientation) const { return true; }
+    virtual double C(Orientation orientation) const
+    {
+        if (orientation == Horizontal)
+            return (1./indexRatio()-1.)/surfaceRadius_horizontal();
+        else if (orientation == Vertical)
+            return (1./indexRatio()-1.)/surfaceRadius_vertical();
+        else if (orientation == Spherical)
+            return (1./indexRatio()-1.)/surfaceRadius_horizontal();
+
+        return ABCD::C(orientation);
+    }
+        // isAligned(orientation) ? (1./indexRatio()-1.)/surfaceRadius() : ABCD::C(orientation); }   alte berechnung mit einem surfaceRadius
 
 public:
 	/// @return the surface curvature radius
-	double surfaceRadius() const { return m_surfaceRadius; }
+    double surfaceRadius_horizontal() const { return m_surfaceRadius_h; }
+    double surfaceRadius_vertical() const { return m_surfaceRadius_v; }
 	/// set the surface curvature radius
-	void setSurfaceRadius(double surfaceRadius);
+    void setSurfaceRadii(double surfaceRadius_h, double surfaceRadius_v);
 
 private:
-	double m_surfaceRadius;
+    double m_surfaceRadius_h;
+    double m_surfaceRadius_v;
 };
 
 /**

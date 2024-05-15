@@ -176,7 +176,9 @@ void GaussianBeamWindow::writeOptics(QXmlStreamWriter& xmlWriter, const Optics* 
 	else if (optics->type() == CurvedInterfaceType)
 	{
 		xmlWriter.writeTextElement("indexRatio", QString::number(dynamic_cast<const CurvedInterface*>(optics)->indexRatio()));
-		xmlWriter.writeTextElement("surfaceRadius", QString::number(dynamic_cast<const CurvedInterface*>(optics)->surfaceRadius()));
+        xmlWriter.writeTextElement("surfaceRadii", QString::number(dynamic_cast<const CurvedInterface*>(optics)->surfaceRadius_horizontal())
+                                                       + "/"
+                                                       + QString::number(dynamic_cast<const CurvedInterface*>(optics)->surfaceRadius_vertical()));
 	}
 	else if (optics->type() == DielectricSlabType)
 	{

@@ -423,7 +423,7 @@ void OpticsBench::addOptics(OpticsType opticsType, int index)
 	else if (opticsType == FlatInterfaceType)
 		optics = new FlatInterface(1.5, 0.0, name);
 	else if (opticsType == CurvedInterfaceType)
-		optics = new CurvedInterface(0.1, 1.5, 0.0, name);
+        optics = new CurvedInterface(0.1, 0.1, 1.5, 0.0, name);
 	else if (opticsType == DielectricSlabType)
 		optics = new DielectricSlab(1.5, 0.1, 0.0, name);
 	else if (opticsType == GenericABCDType)

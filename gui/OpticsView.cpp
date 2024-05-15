@@ -677,7 +677,7 @@ void OpticsItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option
 		if (m_optics->type() == FlatInterfaceType)
 			path.lineTo(rect.center().x(), rect.bottom());
 		else
-			path.arcTo(rect, 90., dynamic_cast<const CurvedInterface*>(m_optics)->surfaceRadius() >= 0. ? 180. : -180.);
+            path.arcTo(rect, 90., dynamic_cast<const CurvedInterface*>(m_optics)->surfaceRadius_horizontal() >= 0. ? 180. : -180.);
 		path.lineTo(origin, rect.bottom());
 		painter->drawPath(path);
 	}

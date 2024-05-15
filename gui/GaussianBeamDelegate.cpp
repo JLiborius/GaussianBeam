@@ -120,7 +120,8 @@ QWidget *GaussianBeamDelegate::createEditor(QWidget* parent,
 			properties << EditorProperty(0., Utils::infinity, "n2/n1 = ");
 		else if (optics->type() == CurvedInterfaceType)
 			properties << EditorProperty(0., Utils::infinity, "n2/n1 = ")
-			           << EditorProperty(-Utils::infinity, Utils::infinity, "R = ", Unit(UnitCurvature).string());
+                       << EditorProperty(-Utils::infinity, Utils::infinity, "R_h = ", Unit(UnitCurvature).string())
+                       << EditorProperty(-Utils::infinity, Utils::infinity, "R_v = ", Unit(UnitCurvature).string());
 		else if (optics->type() == DielectricSlabType)
 			properties << EditorProperty(0., Utils::infinity, "n2/n1 = ")
 			           << EditorProperty(0., Utils::infinity, "width = ", Unit(UnitWidth).string());
@@ -231,7 +232,8 @@ void GaussianBeamDelegate::setEditorData(QWidget* editor, const QModelIndex& ind
 		{
 			const CurvedInterface* curvedInterface = dynamic_cast<const CurvedInterface*>(optics);
 			propertyEditor->setValue(0, curvedInterface->indexRatio());
-			propertyEditor->setValue(1, curvedInterface->surfaceRadius()*Unit(UnitCurvature).divider());
+            propertyEditor->setValue(1, curvedInterface->surfaceRadius_horizontal()*Unit(UnitCurvature).divider());
+            propertyEditor->setValue(2, curvedInterface->surfaceRadius_vertical()*Unit(UnitCurvature).divider());
 		}
 		else if (optics->type() == GenericABCDType)
 		{
