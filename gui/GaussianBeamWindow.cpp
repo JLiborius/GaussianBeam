@@ -128,6 +128,7 @@ GaussianBeamWindow::GaussianBeamWindow(const QString& fileName)
 	m_hOpticsView->setStatusWidget(statusWidget);
 	m_vOpticsView->setStatusWidget(statusWidget);
 
+
 	// Layouts
 	QSplitter *splitter = new QSplitter(Qt::Vertical, this);
 	splitter->addWidget(m_table);

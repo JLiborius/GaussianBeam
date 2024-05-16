@@ -37,7 +37,7 @@ public:
 	virtual ~OpticsFunction() {}
 
 public:
-	virtual double value(const std::vector<double>& x) const;
+    virtual std::pair<double, double> value(const std::vector<double>& x) const;
 	/// @todo this should be private
 	Beam beam(const std::vector<double>& x) const;
 	std::vector<double> currentPosition() const;

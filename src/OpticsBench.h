@@ -187,8 +187,8 @@ public:
 	void setInputBeam(const Beam& beam);
 	const Beam* axis(int index) const;
 	std::pair<Beam*, double> closestPosition(const Utils::Point& point, int preferedSide = 1) const;
-	double sensitivity(int index) const;
-
+    double sensitivity_h(int index) const;
+    double sensitivity_v(int index) const;
 	/// Cavity
 	Cavity& cavity() { return m_cavity; }
 
@@ -239,7 +239,8 @@ private:
 
 	// Cache
 	std::vector<Beam*> m_beams;
-	std::vector<double> m_sensitivity;
+    std::vector<double> m_sensitivity_horizontal;
+    std::vector<double> m_sensitivity_vertical;
 	bool m_beamSpherical, m_fitSpherical;
 	bool m_1D;
 	bool m_modified;

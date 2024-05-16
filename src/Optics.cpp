@@ -152,10 +152,12 @@ void Optics::moveDescendant(double distance)
 void Optics::setPosition(double position, bool respectLocks)
 {
 	setPosition(position, respectLocks, respectLocks);
+
 }
 
 void Optics::setPosition(double position, bool respectAbsoluteLock, bool respectRelativeLock)
 {
+
 	if (relativeLockTreeAbsoluteLock() && respectAbsoluteLock)
 		return;
 

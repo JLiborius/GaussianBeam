@@ -77,7 +77,7 @@ Beam OpticsFunction::beam(const std::vector<double>& x) const
 	return result;
 }
 
-double OpticsFunction::value(const std::vector<double>& x) const
+std::pair<double, double> OpticsFunction::value(const std::vector<double>& x) const
 {
 	return Beam::overlap(m_overlapBeam, beam(x));
 }

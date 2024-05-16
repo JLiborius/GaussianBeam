@@ -463,17 +463,17 @@ int OpticsBench::setOpticsPosition(int index, double position)
 	// Check that the optics does not overlap with another optics
 	double start1 = position;
 	double stop1  = position + movedOptics->width();
-	for (vector<Optics*>::iterator it = m_optics.begin(); it != m_optics.end(); it++)
+    for (vector<Optics*>::iterator it = m_optics.begin(); it != m_optics.end(); it++)
 		if ((*it) != movedOptics)
 		{
 			double start2 = (*it)->position();
 			double stop2  = (*it)->endPosition();
-			if (((start2 >= start1) && (start2 <= stop1)) ||
-				((stop2  >= start1) && (stop2  <= stop1)) ||
-				((start1 >= start2) && (start1 <= stop2)) ||
-				((stop1  >= start2) && (stop1  <= stop2)))
+            if (((start2 >= start1) && (start2 <= stop1) && ((*it)->type() != CreateBeamType)) ||
+                ((stop2  >= start1) && (stop2  <= stop1) && ((*it)->type() != CreateBeamType)) ||
+                ((start1 >= start2) && (start1 <= stop2) && ((*it)->type() != CreateBeamType)) ||
+                ((stop1  >= start2) && (stop1  <= stop2) && ((*it)->type() != CreateBeamType)))
 				return index;
-		}
+        }
 
 	// Move the optics
 	m_optics[index]->setPosition(position, true);
@@ -541,9 +541,14 @@ const Beam* OpticsBench::axis(int index) const
 		return beam(index - 1);
 }
 
-double OpticsBench::sensitivity(int index) const
+double OpticsBench::sensitivity_h(int index) const
 {
-	return m_sensitivity[index];
+    return m_sensitivity_horizontal[index];
+}
+
+double OpticsBench::sensitivity_v(int index) const
+{
+    return m_sensitivity_vertical[index];
 }
 
 void OpticsBench::updateExtremeBeams()
@@ -598,7 +603,8 @@ void OpticsBench::computeBeams(int changedIndex, bool backwards)
 	function.setOverlapBeam(*m_beams.back());
 	function.setCheckLock(false);
 
-	m_sensitivity = function.curvature(function.currentPosition())/2.;
+    m_sensitivity_horizontal = function.curvature(function.currentPosition()).first/2.;
+    m_sensitivity_vertical = function.curvature(function.currentPosition()).second/2.;
 
 	bool spherical = true;
 	for (int i = 0; i < nOptics(); i++)
@@ -754,7 +760,7 @@ bool OpticsBench::magicWaist()
 		/// @bug 2D magic waist
 		// Check waist
 		Beam beam = function.beam(positions);
-		if (Beam::overlap(beam, m_targetBeam) > m_targetOverlap)
+        if (Beam::overlap(beam, m_targetBeam).first > m_targetOverlap)
 		{
 			cerr << "found waist : " << beam << " // try = " << i << endl;
 			found = true;

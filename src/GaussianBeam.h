@@ -151,7 +151,7 @@ public:
 	* hence the default value for z
 	* @todo this is only implented for beams of identical wavelength and copropagating
 	*/
-	static double overlap(const Beam& beam1, const Beam& beam2, double z = 0., Orientation = Ellipsoidal);
+    static std::pair<double, double> overlap(const Beam& beam1, const Beam& beam2, double z = 0., Orientation = Ellipsoidal);
 	/**
 	* Tell whether the two given beams share the same optical axis, in the same direction
 	*/

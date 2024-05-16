@@ -170,8 +170,8 @@ QVariant GaussianBeamModel::data(const QModelIndex& index, int role) const
 	}
     else if (column == Property::OpticsSensitivity)
     {
-		values << fabs(m_bench->sensitivity(row))*100./sqr(Unit(UnitPosition).divider());
-        if (!m_bench->isSpherical()) values << fabs(m_bench->sensitivity(row))*100./sqr(Unit(UnitPosition).divider());
+        values << fabs(m_bench->sensitivity_h(row))*100./sqr(Unit(UnitPosition).divider());
+        if (!m_bench->isSpherical()) values << fabs(m_bench->sensitivity_v(row))*100./sqr(Unit(UnitPosition).divider());
     }
 	else if (column == Property::OpticsName)
 	{
