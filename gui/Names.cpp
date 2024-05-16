@@ -53,9 +53,9 @@ void initNames(QApplication* app)
 	Property::fullName.insert(Property::OpticsProperties,       app->translate("Names", "Properties"));
     Property::fullName.insert(Property::BeamWaist,            app->translate("Names", "Waist"));
 	Property::fullName.insert(Property::BeamWaistPosition,      app->translate("Names", "Waist position"));
-    Property::fullName.insert(Property::BeamRayleigh,           app->translate("Names", "Rayleigh range vertical"));
-    Property::fullName.insert(Property::BeamDivergence,         app->translate("Names", "Divergence vertical"));
-    Property::fullName.insert(Property::OpticsSensitivity,      app->translate("Names", "Sensitivity vertical"));
+    Property::fullName.insert(Property::BeamRayleigh,           app->translate("Names", "Rayleigh range"));
+    Property::fullName.insert(Property::BeamDivergence,         app->translate("Names", "Divergence"));
+    Property::fullName.insert(Property::OpticsSensitivity,      app->translate("Names", "Sensitivity"));
 	Property::fullName.insert(Property::OpticsName,             app->translate("Names", "Name"));
 	Property::fullName.insert(Property::OpticsLock,             app->translate("Names", "Lock"));
 #ifdef ANGLE
