@@ -36,6 +36,7 @@ GaussianBeamWindow::GaussianBeamWindow(const QString& fileName)
 
 	setupUi(this);
 	setWindowIcon(QIcon(":/images/gaussianbeam16.png"));
+    setWindowTitle(tr("GausianBeam AO 1.0"));
 
 	// Bench
     m_bench = new OpticsBench();
@@ -344,7 +345,7 @@ void GaussianBeamWindow::saveFile(const QString& path)
 
 void GaussianBeamWindow::setCurrentFile(const QString& fileName)
 {
-	setWindowTitle(QString()); // When a file is loaded, Qt takes care of the window title, given windowModified() and windowFilePath()
+    setWindowTitle(QString()); // When a file is loaded, Qt takes care of the window title, given windowModified() and windowFilePath()
 	m_bench->setModified(false);
 	m_currentFile = fileName;
 	setWindowFilePath(m_currentFile);

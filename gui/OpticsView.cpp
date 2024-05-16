@@ -626,13 +626,14 @@ void OpticsItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option
 	Q_UNUSED(option);
 	Q_UNUSED(widget);
 
+    /*
 	// Draw the bounding rect of the optics
 	QPen boundingPen(Qt::blue);
 	boundingPen.setCosmetic(true);
 	painter->setPen(boundingPen);
 	painter->setBrush(QBrush());
 	painter->drawRect(boundingRect());
-
+    */
 	QColor opticsColor = QColor(153, 209, 247, 150);
 	QBrush opticsBrush(opticsColor);
 	QPen opticsPen(opticsColor.darker());

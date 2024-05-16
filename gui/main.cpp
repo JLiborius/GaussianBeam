@@ -31,8 +31,8 @@ int main(int argc, char *argv[])
 
 	QApplication app(argc, argv);
 
-	QCoreApplication::setOrganizationName("GaussianBeam");
-	QCoreApplication::setApplicationName("GaussianBeam");
+    QCoreApplication::setOrganizationName("GaussianBeam");
+    QCoreApplication::setApplicationName("GaussianBeam AO 1.0");
 	QCoreApplication::setApplicationVersion("0.5");
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
 	if (argc > 1)
 		file = argv[1];
 
-	GaussianBeamWindow window(file);
+    GaussianBeamWindow window(file);
 	window.show();
 	return app.exec();
 }
