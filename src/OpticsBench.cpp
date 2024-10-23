@@ -413,7 +413,7 @@ void OpticsBench::addOptics(OpticsType opticsType, int index)
 	else if (opticsType == FlatMirrorType)
 	{
 		optics = new FlatMirror(0.0, name);
-		optics->setAngle(M_PI);
+        optics->setAngle(M_PI);
 	}
 	else if (opticsType == CurvedMirrorType)
 	{
