@@ -76,8 +76,9 @@ QWidget *GaussianBeamDelegate::createEditor(QWidget* parent,
 
 	switch (column)
 	{
+    case Property::OpticsRelativePosition:
 	case Property::OpticsPosition:
-	case Property::OpticsRelativePosition:
+
 	case Property::OpticsAngle:
 	{
 		QDoubleSpinBox* editor = new QDoubleSpinBox(parent);
@@ -86,16 +87,16 @@ QWidget *GaussianBeamDelegate::createEditor(QWidget* parent,
 		editor->setMaximum(Utils::infinity);
 		return editor;
 	}
-	case Property::BeamWaist:
-	case Property::BeamRayleigh:
-	case Property::BeamDivergence:
-	{
-		QList<EditorProperty> properties;
-		properties << EditorProperty(0., Utils::infinity);
-		if (!m_bench->isSpherical())
-			properties << EditorProperty(0., Utils::infinity);
-		return new PropertyEditor(properties, parent);
-	}
+    case Property::BeamWaist:
+    case Property::BeamRayleigh:
+    case Property::BeamDivergence:
+    {
+        QList<EditorProperty> properties;
+        properties << EditorProperty(0., Utils::infinity);
+        if (!m_bench->isSpherical())
+            properties << EditorProperty(0., Utils::infinity);
+        return new PropertyEditor(properties, parent);
+    }
 	case Property::BeamWaistPosition:
 	{
 		QList<EditorProperty> properties;
@@ -111,14 +112,17 @@ QWidget *GaussianBeamDelegate::createEditor(QWidget* parent,
 			properties << EditorProperty(0., Utils::infinity, "n = ")
 			           << EditorProperty(1., Utils::infinity, tr("M²") + " = ");
 		else if (optics->type() == LensType)
-			properties << EditorProperty(-Utils::infinity, Utils::infinity, "f = ", Unit(UnitFocal).string());
+            properties << EditorProperty(-Utils::infinity, Utils::infinity, "f_h = ", Unit(UnitFocal).string())
+                       << EditorProperty(-Utils::infinity, Utils::infinity, "f_v = ", Unit(UnitFocal).string());
+
 		else if (optics->type() == CurvedMirrorType)
 			properties << EditorProperty(-Utils::infinity, Utils::infinity, "R = ", Unit(UnitCurvature).string());
 		else if (optics->type() == FlatInterfaceType)
 			properties << EditorProperty(0., Utils::infinity, "n2/n1 = ");
 		else if (optics->type() == CurvedInterfaceType)
 			properties << EditorProperty(0., Utils::infinity, "n2/n1 = ")
-			           << EditorProperty(-Utils::infinity, Utils::infinity, "R = ", Unit(UnitCurvature).string());
+                       << EditorProperty(-Utils::infinity, Utils::infinity, "R_h = ", Unit(UnitCurvature).string())
+                       << EditorProperty(-Utils::infinity, Utils::infinity, "R_v = ", Unit(UnitCurvature).string());
 		else if (optics->type() == DielectricSlabType)
 			properties << EditorProperty(0., Utils::infinity, "n2/n1 = ")
 			           << EditorProperty(0., Utils::infinity, "width = ", Unit(UnitWidth).string());
@@ -198,10 +202,10 @@ void GaussianBeamDelegate::setEditorData(QWidget* editor, const QModelIndex& ind
 		spinBox->setValue(value);
 		break;
 	}
-	case Property::BeamWaist:
+    case Property::BeamWaist:
 	case Property::BeamWaistPosition:
-	case Property::BeamRayleigh:
-	case Property::BeamDivergence:
+    case Property::BeamRayleigh:
+    case Property::BeamDivergence:
 	{
 		QList<QVariant> values = m_model->data(index, Qt::EditRole).toList();
 		for(int i = 0; i < values.size(); i++)
@@ -217,7 +221,10 @@ void GaussianBeamDelegate::setEditorData(QWidget* editor, const QModelIndex& ind
 			propertyEditor->setValue(1, createBeam->beam()->M2());
 		}
 		else if (optics->type() == LensType)
-			propertyEditor->setValue(0, dynamic_cast<const Lens*>(optics)->focal()*Unit(UnitFocal).divider());
+        {
+            propertyEditor->setValue(0, dynamic_cast<const Lens*>(optics)->focal_horizontal()*Unit(UnitFocal).divider());
+            propertyEditor->setValue(1, dynamic_cast<const Lens*>(optics)->focal_vertical()*Unit(UnitFocal).divider());
+        }
 		else if (optics->type() == CurvedMirrorType)
 			propertyEditor->setValue(0, dynamic_cast<const CurvedMirror*>(optics)->curvatureRadius()*Unit(UnitCurvature).divider());
 		else if (optics->type() == FlatInterfaceType)
@@ -226,7 +233,8 @@ void GaussianBeamDelegate::setEditorData(QWidget* editor, const QModelIndex& ind
 		{
 			const CurvedInterface* curvedInterface = dynamic_cast<const CurvedInterface*>(optics);
 			propertyEditor->setValue(0, curvedInterface->indexRatio());
-			propertyEditor->setValue(1, curvedInterface->surfaceRadius()*Unit(UnitCurvature).divider());
+            propertyEditor->setValue(1, curvedInterface->surfaceRadius_horizontal()*Unit(UnitCurvature).divider());
+            propertyEditor->setValue(2, curvedInterface->surfaceRadius_vertical()*Unit(UnitCurvature).divider());
 		}
 		else if (optics->type() == GenericABCDType)
 		{
@@ -303,10 +311,10 @@ void GaussianBeamDelegate::setModelData(QWidget* editor, QAbstractItemModel* mod
 	switch (column)
 	{
 	case Property::OpticsProperties:
-	case Property::BeamWaist:
+    case Property::BeamWaist:
 	case Property::BeamWaistPosition:
-	case Property::BeamRayleigh:
-	case Property::BeamDivergence:
+    case Property::BeamRayleigh:
+    case Property::BeamDivergence:
 	{
 		model->setData(index, static_cast<PropertyEditor*>(editor)->values());
 		break;

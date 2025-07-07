@@ -1,0 +1,22 @@
+﻿{
+    "configurations": [
+        {
+            "name": "x64-Release",
+            "generator": "Ninja",
+            "configurationType": "RelWithDebInfo",
+            "buildRoot": "C:\\Users\\Julian\\Documents\\AgileOptic\\Gauss\\${name}",
+            "installRoot": "C:\\Users\\Julian\\Documents\\AgileOptic\\Gauss\\${name}",
+            "cmakeCommandArgs": "",
+            "buildCommandArgs": "",
+            "ctestCommandArgs": "",
+            "inheritEnvironments": [ "msvc_x64_x64" ],
+            "variables": [
+                {
+                    "name": "QT_QMAKE_EXECUTABLE",
+                    "value": "C:/Qt/4.8.7/bin/qmake.exe",
+                    "type": "FILEPATH"
+                }
+            ]
+        }
+    ]
+}

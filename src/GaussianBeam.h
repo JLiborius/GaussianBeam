@@ -43,7 +43,7 @@ Orientation quadrature(Orientation orientation);
 * that corresponds to the algebraic distance between the origin and a point on the beam axis.
 * The Gaussian properties of the beam are defined by its wavelength, waist and waist position on the vertical
 * and horizontal axis. In all get function, the default orientation is Horizontal and in all set function the default
-* orientation is Spherical ("default" means "no argment given" or "unvalid argument given, i.e. ellispoidal")
+* orientation is Spherical ("default" means "no argument given" or "unvalid argument given, i.e. ellispoidal")
 */
 class Beam
 {
@@ -151,7 +151,7 @@ public:
 	* hence the default value for z
 	* @todo this is only implented for beams of identical wavelength and copropagating
 	*/
-	static double overlap(const Beam& beam1, const Beam& beam2, double z = 0., Orientation = Ellipsoidal);
+    static std::pair<double, double> overlap(const Beam& beam1, const Beam& beam2, double z = 0., Orientation = Ellipsoidal);
 	/**
 	* Tell whether the two given beams share the same optical axis, in the same direction
 	*/

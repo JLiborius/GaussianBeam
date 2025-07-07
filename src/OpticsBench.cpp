@@ -128,9 +128,9 @@ OpticsBench::~OpticsBench()
 
 void OpticsBench::resetDefaultValues()
 {
-	m_wavelength = 461e-9;
+    m_wavelength = 460e-9;
 	/// @todo better vertical boundaries
-	m_boundary = Rect(-0.1, -0.2, 0.7, 0.2);
+    m_boundary = Rect(-0.1, -0.2, 0.9, 0.2);
 
 	m_targetOverlap = 0.95;
 	m_targetOrientation = Spherical;
@@ -150,7 +150,8 @@ void OpticsBench::clear()
 
 void OpticsBench::populateDefault()
 {
-	CreateBeam* inputBeam = new CreateBeam(180e-6, 10e-3, 1., "w0");
+    // CreateBeam* inputBeam = new CreateBeam(180e-6, 10e-3, 1., "w0");
+    CreateBeam* inputBeam = new CreateBeam(500e-6, 0., 1., "w0");
 	inputBeam->setAbsoluteLock(true);
 	addOptics(inputBeam, 0);
 
@@ -408,21 +409,21 @@ void OpticsBench::addOptics(OpticsType opticsType, int index)
 	Optics* optics;
 
 	if (opticsType == LensType)
-		optics = new Lens(0.1, 0.0, name);
+        optics = new Lens(0.1, 0.1, 0.0, name);
 	else if (opticsType == FlatMirrorType)
 	{
 		optics = new FlatMirror(0.0, name);
-		optics->setAngle(M_PI);
+        optics->setAngle(2*M_PI);
 	}
 	else if (opticsType == CurvedMirrorType)
 	{
 		optics = new CurvedMirror(0.05, 0.0, name);
-		optics->setAngle(M_PI);
+        optics->setAngle(2*M_PI);
 	}
 	else if (opticsType == FlatInterfaceType)
 		optics = new FlatInterface(1.5, 0.0, name);
 	else if (opticsType == CurvedInterfaceType)
-		optics = new CurvedInterface(0.1, 1.5, 0.0, name);
+        optics = new CurvedInterface(0.1, 0.1, 1.5, 0.0, name);
 	else if (opticsType == DielectricSlabType)
 		optics = new DielectricSlab(1.5, 0.1, 0.0, name);
 	else if (opticsType == GenericABCDType)
@@ -462,17 +463,17 @@ int OpticsBench::setOpticsPosition(int index, double position)
 	// Check that the optics does not overlap with another optics
 	double start1 = position;
 	double stop1  = position + movedOptics->width();
-	for (vector<Optics*>::iterator it = m_optics.begin(); it != m_optics.end(); it++)
+    for (vector<Optics*>::iterator it = m_optics.begin(); it != m_optics.end(); it++)
 		if ((*it) != movedOptics)
 		{
 			double start2 = (*it)->position();
 			double stop2  = (*it)->endPosition();
-			if (((start2 >= start1) && (start2 <= stop1)) ||
-				((stop2  >= start1) && (stop2  <= stop1)) ||
-				((start1 >= start2) && (start1 <= stop2)) ||
-				((stop1  >= start2) && (stop1  <= stop2)))
+            if (((start2 >= start1) && (start2 <= stop1) && ((*it)->type() != CreateBeamType)) ||
+                ((stop2  >= start1) && (stop2  <= stop1) && ((*it)->type() != CreateBeamType)) ||
+                ((start1 >= start2) && (start1 <= stop2) && ((*it)->type() != CreateBeamType)) ||
+                ((stop1  >= start2) && (stop1  <= stop2) && ((*it)->type() != CreateBeamType)))
 				return index;
-		}
+        }
 
 	// Move the optics
 	m_optics[index]->setPosition(position, true);
@@ -540,9 +541,14 @@ const Beam* OpticsBench::axis(int index) const
 		return beam(index - 1);
 }
 
-double OpticsBench::sensitivity(int index) const
+double OpticsBench::sensitivity_h(int index) const
 {
-	return m_sensitivity[index];
+    return m_sensitivity_horizontal[index];
+}
+
+double OpticsBench::sensitivity_v(int index) const
+{
+    return m_sensitivity_vertical[index];
 }
 
 void OpticsBench::updateExtremeBeams()
@@ -597,7 +603,8 @@ void OpticsBench::computeBeams(int changedIndex, bool backwards)
 	function.setOverlapBeam(*m_beams.back());
 	function.setCheckLock(false);
 
-	m_sensitivity = function.curvature(function.currentPosition())/2.;
+    m_sensitivity_horizontal = function.curvature(function.currentPosition()).first/2.;
+    m_sensitivity_vertical = function.curvature(function.currentPosition()).second/2.;
 
 	bool spherical = true;
 	for (int i = 0; i < nOptics(); i++)
@@ -753,7 +760,7 @@ bool OpticsBench::magicWaist()
 		/// @bug 2D magic waist
 		// Check waist
 		Beam beam = function.beam(positions);
-		if (Beam::overlap(beam, m_targetBeam) > m_targetOverlap)
+        if (Beam::overlap(beam, m_targetBeam).first > m_targetOverlap)
 		{
 			cerr << "found waist : " << beam << " // try = " << i << endl;
 			found = true;

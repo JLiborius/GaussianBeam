@@ -35,8 +35,7 @@ Optics::Optics(OpticsType type, double position, string name)
 	, m_relativeLockParent(0)
 	, m_type(type)
 	, m_rotable(false)
-{
-}
+{}
 
 Optics::Optics(const Optics& optics)
 	: m_position    (optics.m_position    )
@@ -153,10 +152,12 @@ void Optics::moveDescendant(double distance)
 void Optics::setPosition(double position, bool respectLocks)
 {
 	setPosition(position, respectLocks, respectLocks);
+
 }
 
 void Optics::setPosition(double position, bool respectAbsoluteLock, bool respectRelativeLock)
 {
+
 	if (relativeLockTreeAbsoluteLock() && respectAbsoluteLock)
 		return;
 
@@ -237,10 +238,16 @@ bool CreateBeam::operator==(const Optics& other) const
 /////////////////////////////////////////////////
 // Lens class
 
-void Lens::setFocal(double focal)
+void Lens::setFocals(double focal_h, double focal_v)
 {
-	if (focal != 0.)
-		m_focal = focal;
+    if ((focal_v != 0.) && (focal_h != 0.))
+    {
+        m_focal_vertical = focal_v;
+        m_focal_horizontal = focal_h;
+        if (m_focal_horizontal != m_focal_vertical)
+            setOrientation(Ellipsoidal);
+    }
+
 }
 
 /////////////////////////////////////////////////
@@ -290,10 +297,15 @@ void Dielectric::setIndexRatio(double indexRatio)
 /////////////////////////////////////////////////
 // CurvedInterface class
 
-void CurvedInterface::setSurfaceRadius(double surfaceRadius)
+void CurvedInterface::setSurfaceRadii(double surfaceRadius_h, double surfaceRadius_v)
 {
-	if (surfaceRadius != 0.)
-		m_surfaceRadius = surfaceRadius;
+    if ((surfaceRadius_h != 0.) && (surfaceRadius_v != 0.))
+    {
+        m_surfaceRadius_h = surfaceRadius_h;
+        m_surfaceRadius_v = surfaceRadius_v;
+        if (m_surfaceRadius_h != m_surfaceRadius_v)
+            setOrientation(Ellipsoidal);
+    }
 }
 
 /////////////////////////////////////////////////
@@ -311,13 +323,13 @@ Beam ABCD::image(const Beam& inputBeam, const Beam& /*opticalAxis*/) const
 	Beam outputBeam = inputBeam;
 	outputBeam.setIndex(inputBeam.index()*indexJump());
 
-	if ((orientation() == Spherical) && (inputBeam.isSpherical()))
+    /*if ((orientation() == Spherical) && (inputBeam.isSpherical()))
 		forward(inputBeam, outputBeam, Spherical);
 	else
-	{
+    {*/
 		forward(inputBeam, outputBeam, Horizontal);
 		forward(inputBeam, outputBeam, Vertical);
-	}
+    //}
 
 	return outputBeam;
 }

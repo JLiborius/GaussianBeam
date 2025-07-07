@@ -15,7 +15,7 @@
    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
    Boston, MA 02110-1301, USA.
 */
-
+#include <iostream>
 #include "gui/GaussianBeamWindow.h"
 #include "gui/GaussianBeamWidget.h"
 #include "gui/GaussianBeamModel.h"
@@ -35,11 +35,11 @@ GaussianBeamWindow::GaussianBeamWindow(const QString& fileName)
 	m_currentFile = QString();
 
 	setupUi(this);
-	setWindowTitle(QApplication::applicationName());
 	setWindowIcon(QIcon(":/images/gaussianbeam16.png"));
+    setWindowTitle(tr("GausianBeam AO 1.0"));
 
 	// Bench
-	m_bench = new OpticsBench();
+    m_bench = new OpticsBench();
 	m_bench->populateDefault();
 	m_bench->registerEventListener(this);
 
@@ -70,9 +70,8 @@ GaussianBeamWindow::GaussianBeamWindow(const QString& fileName)
 	m_vOpticsScene->setOtherScene(m_hOpticsScene);
 	m_hOpticsView = new OpticsView(m_hOpticsScene, m_bench);
 	m_vOpticsView = new OpticsView(m_vOpticsScene, m_bench);
-	m_hOpticsViewEnsemble = createViewEnsemble(m_hOpticsView);
-	m_vOpticsViewEnsemble = createViewEnsemble(m_vOpticsView);
-
+    m_hOpticsViewEnsemble = createViewEnsemble(m_hOpticsView, "Horizontal");
+    m_vOpticsViewEnsemble = createViewEnsemble(m_vOpticsView, "Vertical");
 	// Widget
 	m_widget = new GaussianBeamWidget(m_bench, this);
 
@@ -84,7 +83,7 @@ GaussianBeamWindow::GaussianBeamWindow(const QString& fileName)
 	m_wavelengthSpinBox->setDecimals(0);
 	m_wavelengthSpinBox->setSuffix(" nm");
 	m_wavelengthSpinBox->setRange(1., 999999.);
-	m_wavelengthSpinBox->setValue(532.);
+    m_wavelengthSpinBox->setValue(460.);
 	m_wavelengthSpinBox->setSingleStep(10.);
 	wavelengthLayout->addWidget(m_wavelengthSpinBox);
 	wavelengthLayout->addWidget(wavelengthLabel);
@@ -94,7 +93,8 @@ GaussianBeamWindow::GaussianBeamWindow(const QString& fileName)
 	// Bars
 	m_fileToolBar = addToolBar(tr("File"));
 	m_fileToolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-	m_fileToolBar->addAction(action_New);
+
+    m_fileToolBar->addAction(action_New);
 	m_recentFilesMenu = new QMenu(this);
 	for (int i = 0; i < m_maxRecentFiles; i++)
 	{
@@ -102,16 +102,16 @@ GaussianBeamWindow::GaussianBeamWindow(const QString& fileName)
 		m_recentFileAction[i]->setVisible(false);
 		connect(m_recentFileAction[i], SIGNAL(triggered()), this, SLOT(openRecentFile()));
 		m_recentFilesMenu->addAction(m_recentFileAction[i]);
-	}
-	action_Open->setMenu(m_recentFilesMenu);
-	m_fileToolBar->addAction(action_Open);
-	m_fileToolBar->addAction(action_Save);
+    }
+    action_Open->setMenu(m_recentFilesMenu);
+    m_fileToolBar->addAction(action_Open);
+    m_fileToolBar->addAction(action_Save);
 	m_fileToolBar->addAction(action_SaveAs);
 	m_fileToolBar->addSeparator();
 	m_addOpticsMenu = new QMenu(this);
-	m_addOpticsMenu->setDefaultAction(action_AddLens);
+    m_addOpticsMenu->setDefaultAction(action_AddLens);
 	m_addOpticsMenu->addAction(action_AddLens);
-	m_addOpticsMenu->addAction(action_AddFlatMirror);
+    m_addOpticsMenu->addAction(action_AddFlatMirror);
 	m_addOpticsMenu->addAction(action_AddCurvedMirror);
 	m_addOpticsMenu->addAction(action_AddFlatInterface);
 	m_addOpticsMenu->addAction(action_AddCurvedInterface);
@@ -128,6 +128,7 @@ GaussianBeamWindow::GaussianBeamWindow(const QString& fileName)
 	statusBar()->addWidget(statusWidget, 1);
 	m_hOpticsView->setStatusWidget(statusWidget);
 	m_vOpticsView->setStatusWidget(statusWidget);
+
 
 	// Layouts
 	QSplitter *splitter = new QSplitter(Qt::Vertical, this);
@@ -151,8 +152,14 @@ GaussianBeamWindow::GaussianBeamWindow(const QString& fileName)
 	readSettings();
 	onOpticsBenchSphericityChanged();
 
-	for (int i = 0; i < 2; i++)
-		m_bench->addOptics(LensType, m_bench->nOptics());
+    // default lenses are added
+    Optics* optics_0 = new Lens(0.15, 0.15, 0.150, "L0");
+    Optics* optics_1 = new Lens(-0.1, -0.1, 0.220, "L1");
+    m_bench->addOptics(optics_0, m_bench->nOptics());
+    m_bench->addOptics(optics_1, m_bench->nOptics());
+    /*for (int i = 0; i < 2; i++)
+        m_bench->addOptics(LensType, m_bench->nOptics());
+    */
 /*
 	Cavity& cavity = m_bench->cavity();
 	cavity.addOptics(dynamic_cast<const ABCD*>(m_bench->optics(1)));
@@ -164,20 +171,23 @@ GaussianBeamWindow::GaussianBeamWindow(const QString& fileName)
 		openFile(fileName);
 }
 
-QWidget* GaussianBeamWindow::createViewEnsemble(OpticsView* view)
+QWidget* GaussianBeamWindow::createViewEnsemble(OpticsView* view, QString title)
 {
-	QWidget* viewWidget = new QWidget(this);
-	QGridLayout* viewLayout = new QGridLayout();
-	CornerWidget* cornerWidget = new CornerWidget(QColor(245, 245, 200),
-	              ":/images/zoom-best-fit.png", view->propertiesWidget(), this);
-	GraduatedRuller* hRuller = new GraduatedRuller(view, Qt::Horizontal);
-	GraduatedRuller* vRuller = new GraduatedRuller(view, Qt::Vertical);
-	viewLayout->addWidget(view, 0, 0);
-	viewLayout->addWidget(cornerWidget, 1, 1);
-	viewLayout->addWidget(hRuller, 1, 0);
-	viewLayout->addWidget(vRuller, 0, 1);
-	viewLayout->setSpacing(0);
-	viewWidget->setLayout(viewLayout);
+    QWidget* viewWidget = new QWidget(this);
+    QGridLayout* viewLayout = new QGridLayout();
+    QLabel* titleLabel = new QLabel(title, this);
+    CornerWidget* cornerWidget = new CornerWidget(QColor(245, 245, 200),
+                  ":/images/zoom-best-fit.png", view->propertiesWidget(), this);
+    GraduatedRuller* hRuller = new GraduatedRuller(view, Qt::Horizontal);
+    GraduatedRuller* vRuller = new GraduatedRuller(view, Qt::Vertical);
+    viewLayout->addWidget(view, 1, 0);
+    viewLayout->addWidget(titleLabel, 0, 0);
+    viewLayout->addWidget(cornerWidget, 2, 1);
+    viewLayout->addWidget(hRuller, 2, 0);
+    viewLayout->addWidget(vRuller, 1, 1);
+    viewLayout->setSpacing(0);
+    viewWidget->setLayout(viewLayout);
+
 
 	return viewWidget;
 }
@@ -227,7 +237,8 @@ void GaussianBeamWindow::writeSettings()
 	QSettings settings;
 	settings.setValue("GaussianBeamWindow/size", size());
 	settings.setValue("GaussianBeamWindow/pos", pos());
-	settings.setValue("GaussianBeamWindow/wavelength", m_bench->wavelength());
+    // hier wird die wavelength der letzten session gespeichert und beim nächsten aufruf verwendet
+    settings.setValue("GaussianBeamWindow/wavelength", m_bench->wavelength());
 }
 
 void GaussianBeamWindow::readSettings()
@@ -334,7 +345,7 @@ void GaussianBeamWindow::saveFile(const QString& path)
 
 void GaussianBeamWindow::setCurrentFile(const QString& fileName)
 {
-	setWindowTitle(QString()); // When a file is loaded, Qt takes care of the window title, given windowModified() and windowFilePath()
+    setWindowTitle(QString()); // When a file is loaded, Qt takes care of the window title, given windowModified() and windowFilePath()
 	m_bench->setModified(false);
 	m_currentFile = fileName;
 	setWindowFilePath(m_currentFile);

@@ -33,11 +33,11 @@ public:
 
 public:
 	/// Evaluate the function point @p x
-	virtual double value(const std::vector<double>& x) const = 0;
+    virtual std::pair<double, double> value(const std::vector<double>& x) const = 0;
 	/// Compute the function gradient at point @p x
 	std::vector<double> gradient(const std::vector<double>& x) const;
 	/// Compute the vector of second derivatives at point @p x
-	std::vector<double> curvature(const std::vector<double>& x) const;
+    std::pair<std::vector<double>, std::vector<double> > curvature(const std::vector<double>& x) const;
 	/// Search the extremum of the function along a line that crosses point @p x and directed along @p u
 	std::vector<double> lineExtremum(const std::vector<double>& x, const std::vector<double>& u, bool min) const;
 	std::vector<double> lineMinimum(const std::vector<double>& x, const std::vector<double>& u) const { return lineExtremum(x, u, true); }

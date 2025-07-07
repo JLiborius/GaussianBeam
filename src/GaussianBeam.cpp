@@ -107,7 +107,7 @@ void Beam::setWaistPosition(double waistPosition, Orientation orientation)
 double Beam::waist(Orientation orientation) const
 {
 	if (orientation == Vertical)
-		return m_waist.second;
+        return m_waist.second;
 
 	return m_waist.first;
 }
@@ -343,9 +343,9 @@ pair<double, double> Beam::angledBoundaries(double position, double slope, Orien
 //////////////////////
 // static computations
 
-double Beam::overlap(const Beam& beam1, const Beam& beam2, double z, Orientation orientation)
+pair<double, double> Beam::overlap(const Beam& beam1, const Beam& beam2, double z, Orientation orientation)
 {
-	if ((orientation != Ellipsoidal) || (beam1.isSpherical() && beam2.isSpherical()))
+    if ((orientation != Ellipsoidal) || (beam1.isSpherical() && beam2.isSpherical()))
 	{
 	//	double w1 = beam1.radius(z);
 	//	double w2 = beam2.radius(z);
@@ -363,12 +363,14 @@ double Beam::overlap(const Beam& beam1, const Beam& beam2, double z, Orientation
 		//double eta = 4./(w12*w22)/(sqr(1./w12 + 1./w22) + sqr(zred1/w12 - zred2/w22));
 		double eta = 4.*rho/(sqr(1. + rho) + sqr(zred1 - zred2*rho));
 
-		return eta;
+        return std::make_pair(eta, eta);
 	}
 	else
-		return sqrt(overlap(beam1, beam2, z, Horizontal)*overlap(beam1, beam2, z, Vertical));
+        return std::make_pair(overlap(beam1, beam2, z, Horizontal).first, overlap(beam1, beam2, z, Vertical).first);
 
-	return 0.;
+
+
+    return std::make_pair(0., 0.);
 }
 
 bool Beam::copropagating(const Beam& beam1, const Beam& beam2)

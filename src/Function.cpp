@@ -40,31 +40,36 @@ vector<double> Function::gradient(const vector<double>& x) const
 	for (unsigned int i = 0; i < x.size(); i++)
 	{
 		xlocal[i] += epsilon;
-		grad[i] = (value(xlocal) - value(x))/epsilon;
+        grad[i] = (value(xlocal).first - value(x).first)/epsilon;
 		xlocal[i] -= epsilon;
 	}
 
 	return grad;
 }
 
-vector<double> Function::curvature(const vector<double>& x) const
+std::pair<vector<double>, vector<double> > Function::curvature(const vector<double>& x) const
 {
 	double epsilon = 1e-6;
 	vector<double> xlocal = x;
-	vector<double> curv(x.size());
+    vector<double > curvHorizontal(x.size());
+    vector<double > curvVertical(x.size());
 
 	for (unsigned int i = 0; i < x.size(); i++)
 	{
-		curv[i] = -2.*value(x);
+        curvHorizontal[i] = -2.* value(x).first;
+        curvVertical[i] = -2.* value(x).second;
 		xlocal[i] += epsilon;
-		curv[i] += value(xlocal);
+        curvHorizontal[i] += value(xlocal).first;
+        curvVertical[i] += value(xlocal).second;
 		xlocal[i] -= 2.*epsilon;
-		curv[i] += value(xlocal);
+        curvHorizontal[i] += value(xlocal).first;
+        curvVertical[i] += value(xlocal).second;
 		xlocal[i] += epsilon;
-		curv[i] /= sqr(epsilon);
+        curvHorizontal[i] /= sqr(epsilon);
+        curvVertical[i] /= sqr(epsilon);
 	}
 
-	return curv;
+    return std::make_pair(curvHorizontal, curvVertical);
 }
 
 void Function::setLine(const vector<double>& point, const vector<double>& direction) const
@@ -80,7 +85,7 @@ vector<double> Function::lineParametric(double x) const
 
 double Function::lineValue(double x) const
 {
-	return (m_min ? 1.: -1.)*value(lineParametric(x));
+    return (m_min ? 1.: -1.) * value(lineParametric(x)).first;
 }
 
 vector<double> Function::lineExtremum(const vector<double>& x, const vector<double>& u, bool min) const
@@ -113,7 +118,7 @@ vector<double> Function::localExtremum(const vector<double>& x, bool min) const
 	vector<double> oldGrad;
 	int i;
 
-	for (i = 0; (value(position) < 0.99999) && (i < maxIter); i++)
+    for (i = 0; (value(position).first < 0.99999) && (i < maxIter); i++)
 	{
 		cerr << "Iteration " << i << endl;
 		// Compute the optimization direction
@@ -134,7 +139,7 @@ vector<double> Function::localExtremum(const vector<double>& x, bool min) const
 		position = lineMaximum(position, direction);
 		for (vector<double>::iterator it = position.begin(); it != position.end(); it++)
 			cerr << " Pos " << (*it) << endl;
-		cerr << " Value : " << value(position) << endl;
+        cerr << " Value : " << value(position).first << endl;
 	}
 
 	if (i == maxIter)

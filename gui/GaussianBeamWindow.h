@@ -79,7 +79,7 @@ protected:
 	virtual void closeEvent(QCloseEvent* event);
 
 private:
-	QWidget* createViewEnsemble(OpticsView* view);
+    QWidget* createViewEnsemble(OpticsView* view, QString title);
 	void newFile();
 	void setCurrentFile(const QString& fileName);
 	void updateRecentFileActions();

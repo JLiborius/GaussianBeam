@@ -166,7 +166,7 @@ void GaussianBeamWidget::displayOverlap()
 {
 	if (m_bench->nOptics() > 0)
 	{
-		double overlap = Beam::overlap(*m_bench->beam(m_bench->nOptics()-1), *m_bench->targetBeam());
+        double overlap = Beam::overlap(*m_bench->beam(m_bench->nOptics()-1), *m_bench->targetBeam()).first;
 		label_OverlapResult->setText(tr("Overlap: ") + QString::number(overlap*100., 'f', 2) + " %");
 	}
 	else

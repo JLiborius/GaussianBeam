@@ -91,7 +91,7 @@ class OpticsView : public QGraphicsView
 Q_OBJECT
 
 public:
-	OpticsView(QGraphicsScene* scene, OpticsBench* bench);
+OpticsView(QGraphicsScene* scene, OpticsBench* bench);
 
 public:
 	void setStatusWidget(StatusWidget* statusWidget) { m_statusWidget = statusWidget; }

@@ -315,7 +315,7 @@ void GaussianBeamWindow::parseOptics(const QDomElement& element, QMap<int, Optic
 	if (element.tagName() == OpticsName::codedName[CreateBeamType])
 		optics = new CreateBeam(1., 1., 1., "");
 	else if (element.tagName() == OpticsName::codedName[LensType])
-		optics = new Lens(1., 1., "");
+        optics = new Lens(1., 1., 1., "");
 	else if (element.tagName() == OpticsName::codedName[FlatMirrorType])
 		optics = new FlatMirror(1., "");
 	else if (element.tagName() == OpticsName::codedName[CurvedMirrorType])
@@ -323,7 +323,7 @@ void GaussianBeamWindow::parseOptics(const QDomElement& element, QMap<int, Optic
 	else if (element.tagName() == OpticsName::codedName[FlatInterfaceType])
 		optics = new FlatInterface(1., 1., "");
 	else if (element.tagName() == OpticsName::codedName[CurvedInterfaceType])
-		optics = new CurvedInterface(1., 1., 1., "");
+        optics = new CurvedInterface(1., 1., 1., 1., "");
 	else if (element.tagName() == OpticsName::codedName[DielectricSlabType])
 		optics = new DielectricSlab(1., 1., 1., "");
 	else if (element.tagName() == OpticsName::codedName[GenericABCDType])
@@ -354,14 +354,14 @@ void GaussianBeamWindow::parseOptics(const QDomElement& element, QMap<int, Optic
 			lockTree[id] = child.text().toInt();
 		else if (child.tagName() == "width")
 			optics->setWidth(child.text().toDouble());
-		else if (child.tagName() == "focal")
-			dynamic_cast<Lens*>(optics)->setFocal(child.text().toDouble());
+        else if (child.tagName() == "focals")
+            dynamic_cast<Lens*>(optics)->setFocals(child.text().split("/")[0].toDouble(), child.text().split("/")[1].toDouble());
 		else if (child.tagName() == "curvatureRadius")
 			dynamic_cast<CurvedMirror*>(optics)->setCurvatureRadius(child.text().toDouble());
 		else if (child.tagName() == "indexRatio")
 			dynamic_cast<Dielectric*>(optics)->setIndexRatio(child.text().toDouble());
-		else if (child.tagName() == "surfaceRadius")
-			dynamic_cast<CurvedInterface*>(optics)->setSurfaceRadius(child.text().toDouble());
+        else if (child.tagName() == "surfaceRadii")
+            dynamic_cast<CurvedInterface*>(optics)->setSurfaceRadii(child.text().split("/")[0].toDouble(), child.text().split("/")[1].toDouble());
 		else if (child.tagName() == "A")
 			dynamic_cast<GenericABCD*>(optics)->setA(child.text().toDouble(), OrientationName::codedName.key(child.attribute("orientation")));
 		else if (child.tagName() == "B")

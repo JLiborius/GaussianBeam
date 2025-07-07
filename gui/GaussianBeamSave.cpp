@@ -163,7 +163,12 @@ void GaussianBeamWindow::writeOptics(QXmlStreamWriter& xmlWriter, const Optics* 
 		xmlWriter.writeEndElement();
 	}
 	else if (optics->type() == LensType)
-		xmlWriter.writeTextElement("focal", QString::number(dynamic_cast<const Lens*>(optics)->focal()));
+    {
+        xmlWriter.writeTextElement("focals", QString::number(dynamic_cast<const Lens*>(optics)->focal_horizontal())
+                                                     + "/"
+                                                     + QString::number(dynamic_cast<const Lens*>(optics)->focal_vertical()));
+
+    }
 	else if (optics->type() == CurvedMirrorType)
 		xmlWriter.writeTextElement("curvatureRadius", QString::number(dynamic_cast<const CurvedMirror*>(optics)->curvatureRadius()));
 	else if (optics->type() == FlatInterfaceType)
@@ -171,7 +176,9 @@ void GaussianBeamWindow::writeOptics(QXmlStreamWriter& xmlWriter, const Optics* 
 	else if (optics->type() == CurvedInterfaceType)
 	{
 		xmlWriter.writeTextElement("indexRatio", QString::number(dynamic_cast<const CurvedInterface*>(optics)->indexRatio()));
-		xmlWriter.writeTextElement("surfaceRadius", QString::number(dynamic_cast<const CurvedInterface*>(optics)->surfaceRadius()));
+        xmlWriter.writeTextElement("surfaceRadii", QString::number(dynamic_cast<const CurvedInterface*>(optics)->surfaceRadius_horizontal())
+                                                       + "/"
+                                                       + QString::number(dynamic_cast<const CurvedInterface*>(optics)->surfaceRadius_vertical()));
 	}
 	else if (optics->type() == DielectricSlabType)
 	{

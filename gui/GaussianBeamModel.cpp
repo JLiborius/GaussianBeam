@@ -77,7 +77,7 @@ QVariant GaussianBeamModel::data(const QModelIndex& index, int role) const
 
 	QList<QVariant> values;
 
-	if (column == Property::OpticsType)
+    if (column == Property::OpticsType)
 		return OpticsName::fullName[m_bench->optics(row)->type()];
 	else if ((column == Property::OpticsPosition) && (optics->type() != CreateBeamType))
 		values << optics->position()*Unit(UnitPosition).divider();
@@ -92,8 +92,10 @@ QVariant GaussianBeamModel::data(const QModelIndex& index, int role) const
 		}
 		else if (optics->type() == LensType)
 		{
-			return QString("f = ") + QString::number(dynamic_cast<const Lens*>(optics)->focal()*Unit(UnitFocal).divider())
-			                       + Unit(UnitFocal).string();
+            return QString("f_h = ") + QString::number(dynamic_cast<const Lens*>(optics)->focal_horizontal()*Unit(UnitFocal).divider())
+                   + Unit(UnitFocal).string() +
+                   QString("\nf_v = ") + QString::number(dynamic_cast<const Lens*>(optics)->focal_vertical()*Unit(UnitFocal).divider())
+                   + Unit(UnitFocal).string();
 		}
 		else if (optics->type() == CurvedMirrorType)
 		{
@@ -108,8 +110,10 @@ QVariant GaussianBeamModel::data(const QModelIndex& index, int role) const
 		{
 			const CurvedInterface* interface = dynamic_cast<const CurvedInterface*>(optics);
 			return QString("n2/n1 = ") + QString::number(interface->indexRatio()) +
-			       QString("\nR = ") + QString::number(interface->surfaceRadius()*Unit(UnitCurvature).divider())
-			                       + Unit(UnitCurvature).string();
+                   QString("\nR_h = ") + QString::number(interface->surfaceRadius_horizontal()*Unit(UnitCurvature).divider())
+                                   + Unit(UnitCurvature).string() +
+                   QString("\nR_v = ") + QString::number(interface->surfaceRadius_vertical()*Unit(UnitCurvature).divider()) +
+                   Unit(UnitCurvature).string();
 		}
 		else if (optics->type() == DielectricSlabType)
 		{
@@ -143,32 +147,36 @@ QVariant GaussianBeamModel::data(const QModelIndex& index, int role) const
 			}
 		}
 	}
-	else if (column == Property::BeamWaist)
-	{
-		values << m_bench->beam(row)->waist(Horizontal)*Unit(UnitWaist).divider();
-		if (!m_bench->isSpherical()) values << m_bench->beam(row)->waist(Vertical)*Unit(UnitWaist).divider();
-	}
+    else if (column == Property::BeamWaist)
+    {
+        values << m_bench->beam(row)->waist(Horizontal)*Unit(UnitWaist).divider();
+        if (!m_bench->isSpherical()) values << m_bench->beam(row)->waist(Vertical)*Unit(UnitWaist).divider();
+    }
+
 	else if (column == Property::BeamWaistPosition)
 	{
 		values << m_bench->beam(row)->waistPosition(Horizontal)*Unit(UnitPosition).divider();
 		if (!m_bench->isSpherical()) values << m_bench->beam(row)->waistPosition(Vertical)*Unit(UnitPosition).divider();
 	}
-	else if (column == Property::BeamRayleigh)
+    else if (column == Property::BeamRayleigh)
 	{
 		values << m_bench->beam(row)->rayleigh(Horizontal)*Unit(UnitRayleigh).divider();
-		if (!m_bench->isSpherical()) values << m_bench->beam(row)->rayleigh(Vertical)*Unit(UnitRayleigh).divider();
+        if (!m_bench->isSpherical()) values << m_bench->beam(row)->rayleigh(Vertical)*Unit(UnitRayleigh).divider();
 	}
-	else if (column == Property::BeamDivergence)
+    else if (column == Property::BeamDivergence)
 	{
 		values << m_bench->beam(row)->divergence(Horizontal)*Unit(UnitDivergence).divider();
-		if (!m_bench->isSpherical()) values << m_bench->beam(row)->divergence(Vertical)*Unit(UnitDivergence).divider();
+        if (!m_bench->isSpherical()) values << m_bench->beam(row)->divergence(Vertical)*Unit(UnitDivergence).divider();
 	}
-	else if (column == Property::OpticsSensitivity)
-		values << fabs(m_bench->sensitivity(row))*100./sqr(Unit(UnitPosition).divider());
-	else if (column == Property::OpticsName)
-	{
-		return QString::fromUtf8(optics->name().c_str());
-	}
+    else if (column == Property::OpticsSensitivity)
+    {
+        values << fabs(m_bench->sensitivity_h(row))*100./sqr(Unit(UnitPosition).divider());
+        if (!m_bench->isSpherical()) values << fabs(m_bench->sensitivity_v(row))*100./sqr(Unit(UnitPosition).divider());
+    }
+    else if (column == Property::OpticsName)
+    {
+        return QString::fromUtf8(optics->name().c_str());
+    }
 	else if (column == Property::OpticsLock)
 	{
 		if (optics->absoluteLock())
@@ -214,7 +222,7 @@ QVariant GaussianBeamModel::headerData(int section, Qt::Orientation orientation,
 			if (Property::unit[type] != UnitLess)
 				header += " (" + Unit(Property::unit[type]).string(false) + ")";
 			/// @todo handle this special case in a more general way
-			if (type == Property::OpticsSensitivity)
+            if (type == Property::OpticsSensitivity)
 				header += " (%/" + Unit(UnitPosition).string(false) + tr("²") + ")";
 			return breakString(header);
 		}
@@ -265,7 +273,11 @@ bool GaussianBeamModel::setData(const QModelIndex& index, const QVariant& value,
 			createBeam->setBeam(beam);
 		}
 		else if (optics->type() == LensType)
-			dynamic_cast<Lens*>(optics)->setFocal(value.toList()[0].toDouble()*Unit(UnitFocal).multiplier());
+        {
+            dynamic_cast<Lens*>(optics)->setFocals(value.toList()[0].toDouble()*Unit(UnitFocal).multiplier(),
+                                                   value.toList()[1].toDouble()*Unit(UnitFocal).multiplier());
+
+        }
 		else if (optics->type() == CurvedMirrorType)
 			dynamic_cast<CurvedMirror*>(optics)->setCurvatureRadius(value.toList()[0].toDouble()*Unit(UnitCurvature).multiplier());
 		else if (optics->type() == FlatInterfaceType)
@@ -274,7 +286,8 @@ bool GaussianBeamModel::setData(const QModelIndex& index, const QVariant& value,
 		{
 			CurvedInterface* curvedInterfaceOptics = dynamic_cast<CurvedInterface*>(optics);
 			curvedInterfaceOptics->setIndexRatio(value.toList()[0].toDouble());
-			curvedInterfaceOptics->setSurfaceRadius(value.toList()[1].toDouble()*Unit(UnitCurvature).multiplier());
+            curvedInterfaceOptics->setSurfaceRadii(value.toList()[1].toDouble()*Unit(UnitCurvature).multiplier(),
+                                                   value.toList()[2].toDouble()*Unit(UnitCurvature).multiplier());
 		}
 		else if (optics->type() == DielectricSlabType)
 		{
@@ -323,14 +336,14 @@ bool GaussianBeamModel::setData(const QModelIndex& index, const QVariant& value,
 			beam.setWaistPosition(value.toList()[i].toDouble()*Unit(UnitPosition).multiplier(), orientations[i]);
 			m_bench->setBeam(beam, row);
 		}
-	else if (column == Property::BeamRayleigh)
+    else if (column == Property::BeamRayleigh)
 		for (int i = 0; i < orientations.size(); i++)
 		{
 			Beam beam = *m_bench->beam(row);
 			beam.setRayleigh(value.toList()[i].toDouble()*Unit(UnitRayleigh).multiplier(), orientations[i]);
 			m_bench->setBeam(beam, row);
 		}
-	else if (column == Property::BeamDivergence)
+    else if (column == Property::BeamDivergence)
 		for (int i = 0; i < orientations.size(); i++)
 		{
 			Beam beam = *m_bench->beam(row);
@@ -396,8 +409,8 @@ Qt::ItemFlags GaussianBeamModel::flags(const QModelIndex& index) const
 		(column == Property::OpticsLock) ||
 		(column == Property::BeamWaist) ||
 		(column == Property::BeamWaistPosition) ||
-		(column == Property::BeamRayleigh) ||
-		(column == Property::BeamDivergence) ||
+        (column == Property::BeamRayleigh) ||
+        (column == Property::BeamDivergence) ||
 		((column == Property::OpticsProperties)  && (optics->type() != FlatMirrorType)) ||
 		((column == Property::OpticsAngle)       && (optics->isRotable())) ||
 		((column == Property::OpticsOrientation) && (optics->isOrientable())))
