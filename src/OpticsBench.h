@@ -139,6 +139,15 @@ public:
 	double rightBoundary() const { return m_boundary.x2(); }
 	/// Set the bench right boundary to @p leftBoundary
 	void setRightBoundary(double rightBoundary);
+    /// @return the bench upper boundary
+    double upperBoundary() const { return m_boundary.y2(); }
+    /// Set the bench upper boundary to @p leftBoundary
+    void setUpperBoundary(double upperBoundary);
+    /// @return the bench lower boundary
+    double lowerBoundary() const { return m_boundary.y1(); }
+    /// Set the bench lower boundary to @p leftBoundary
+    void setLowerBoundary(double lowerBoundary);
+
 
 	// Optics
 

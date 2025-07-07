@@ -364,6 +364,28 @@ void OpticsBench::setRightBoundary(double rightBoundary)
 	setModified(true);
 }
 
+void OpticsBench::setUpperBoundary(double upperBoundary)
+{
+    if (upperBoundary > m_boundary.y1())
+        m_boundary.setY2(upperBoundary);
+
+    updateExtremeBeams();
+
+    emit(onOpticsBenchBoundariesChanged());
+    setModified(true);
+}
+
+void OpticsBench::setLowerBoundary(double lowerBoundary)
+{
+    if (lowerBoundary < m_boundary.y2())
+        m_boundary.setY1(lowerBoundary);
+
+    updateExtremeBeams();
+
+    emit(onOpticsBenchBoundariesChanged());
+    setModified(true);
+}
+
 /////////////////////////////////////////////////
 // Optics
 

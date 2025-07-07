@@ -59,6 +59,8 @@ protected slots:
 	// Optics bench
 	void on_doubleSpinBox_LeftBoundary_valueChanged(double value);
 	void on_doubleSpinBox_RightBoundary_valueChanged(double value);
+    void on_doubleSpinBox_UpperBoundary_valueChanged(double value);
+    void on_doubleSpinBox_LowerBoundary_valueChanged(double value);
 	// Magic waist
 	void on_pushButton_MagicWaist_clicked();
 	void on_pushButton_LocalOptimum_clicked();

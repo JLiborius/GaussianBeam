@@ -118,6 +118,8 @@ void GaussianBeamWidget::updateUnits()
 	doubleSpinBox_VTargetPosition->setSuffix(Unit(UnitPosition).string());
 	doubleSpinBox_LeftBoundary->setSuffix(Unit(UnitPosition).string());
 	doubleSpinBox_RightBoundary->setSuffix(Unit(UnitPosition).string());
+    doubleSpinBox_UpperBoundary->setSuffix(Unit(UnitPosition).string());
+    doubleSpinBox_LowerBoundary->setSuffix(Unit(UnitPosition).string());
 	/// @todo update table headers and status bar and wavelength
 }
 
@@ -145,10 +147,22 @@ void GaussianBeamWidget::on_doubleSpinBox_RightBoundary_valueChanged(double valu
 	m_bench->setRightBoundary(value*Unit(UnitPosition).multiplier());
 }
 
+void GaussianBeamWidget::on_doubleSpinBox_UpperBoundary_valueChanged(double value)
+{
+    m_bench->setUpperBoundary(value*Unit(UnitPosition).multiplier());
+}
+
+void GaussianBeamWidget::on_doubleSpinBox_LowerBoundary_valueChanged(double value)
+{
+    m_bench->setLowerBoundary(value*Unit(UnitPosition).multiplier());
+}
+
 void GaussianBeamWidget::onOpticsBenchBoundariesChanged()
 {
 	doubleSpinBox_LeftBoundary->setValue(m_bench->leftBoundary()*Unit(UnitPosition).divider());
 	doubleSpinBox_RightBoundary->setValue(m_bench->rightBoundary()*Unit(UnitPosition).divider());
+    doubleSpinBox_UpperBoundary->setValue(m_bench->upperBoundary()*Unit(UnitPosition).divider());
+    doubleSpinBox_LowerBoundary->setValue(m_bench->lowerBoundary()*Unit(UnitPosition).divider());
 }
 
 ///////////////////////////////////////////////////////////
