@@ -76,8 +76,9 @@ QWidget *GaussianBeamDelegate::createEditor(QWidget* parent,
 
 	switch (column)
 	{
+    case Property::OpticsRelativePosition:
 	case Property::OpticsPosition:
-	case Property::OpticsRelativePosition:
+
 	case Property::OpticsAngle:
 	{
 		QDoubleSpinBox* editor = new QDoubleSpinBox(parent);

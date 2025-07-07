@@ -452,7 +452,7 @@ TablePropertySelector::TablePropertySelector(QWidget* parent)
 	                    << Property::OpticsRelativePosition << Property::OpticsProperties
                         << Property::BeamWaist << Property::BeamWaistPosition << Property::BeamRayleigh
                         << Property::BeamDivergence << Property::OpticsSensitivity
-						<< Property::OpticsName << Property::OpticsLock
+                        << Property::OpticsName << Property::OpticsLock
 #ifdef ANGLE
 						<< Property::OpticsAngle
 #endif

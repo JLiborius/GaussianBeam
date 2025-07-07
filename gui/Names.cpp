@@ -18,6 +18,12 @@
 
 #include <gui/Names.h>
 
+#ifndef ANGLE
+#warning "ANGLE is NOT defined!"
+#else
+#warning "ANGLE is defined!"
+#endif
+
 namespace Property
 {
 	QMap<Property::Type, QString> fullName;

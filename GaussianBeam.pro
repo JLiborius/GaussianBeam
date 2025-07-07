@@ -14,6 +14,9 @@ TARGET = gaussianbeam
 DEPENDPATH += .
 QT += xml xmlpatterns
 QMAKE_CXXFLAGS += -pedantic -Wno-long-long -Wno-unused-local-typedefs -g
+
+DEFINES += ANGLE # test für rotation
+
 CONFIG += release warn_on stl qt
 macx:CONFIG += x86 ppc                # Generate Universal Binary for Mac OS X
 win32:RC_FILE = gui/GaussianBeam.rc   # Embed the application icon

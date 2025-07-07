@@ -77,7 +77,7 @@ QVariant GaussianBeamModel::data(const QModelIndex& index, int role) const
 
 	QList<QVariant> values;
 
-	if (column == Property::OpticsType)
+    if (column == Property::OpticsType)
 		return OpticsName::fullName[m_bench->optics(row)->type()];
 	else if ((column == Property::OpticsPosition) && (optics->type() != CreateBeamType))
 		values << optics->position()*Unit(UnitPosition).divider();
@@ -173,10 +173,10 @@ QVariant GaussianBeamModel::data(const QModelIndex& index, int role) const
         values << fabs(m_bench->sensitivity_h(row))*100./sqr(Unit(UnitPosition).divider());
         if (!m_bench->isSpherical()) values << fabs(m_bench->sensitivity_v(row))*100./sqr(Unit(UnitPosition).divider());
     }
-	else if (column == Property::OpticsName)
-	{
-		return QString::fromUtf8(optics->name().c_str());
-	}
+    else if (column == Property::OpticsName)
+    {
+        return QString::fromUtf8(optics->name().c_str());
+    }
 	else if (column == Property::OpticsLock)
 	{
 		if (optics->absoluteLock())
