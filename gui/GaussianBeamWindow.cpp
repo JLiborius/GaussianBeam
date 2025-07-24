@@ -36,7 +36,8 @@ GaussianBeamWindow::GaussianBeamWindow(const QString& fileName)
 
 	setupUi(this);
 	setWindowIcon(QIcon(":/images/gaussianbeam16.png"));
-    setWindowTitle(tr("GausianBeam AO 1.0"));
+    setWindowTitle(QCoreApplication::applicationName() + " v" + QCoreApplication::applicationVersion());
+
 
 	// Bench
     m_bench = new OpticsBench();

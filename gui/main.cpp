@@ -32,8 +32,8 @@ int main(int argc, char *argv[])
 	QApplication app(argc, argv);
 
     QCoreApplication::setOrganizationName("GaussianBeam");
-    QCoreApplication::setApplicationName("GaussianBeam AO 1.0");
-	QCoreApplication::setApplicationVersion("0.5");
+    QCoreApplication::setApplicationName("GaussianBeam AO");
+    QCoreApplication::setApplicationVersion("1.1");
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 	QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF8"));
