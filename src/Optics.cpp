@@ -263,7 +263,8 @@ Beam FlatMirror::image(const Beam& inputBeam, const Beam& opticalAxis) const
 	Beam result = ABCD::image(inputBeam, opticalAxis);
 
 	double rotationAngle = fmod(2.*relativeAngle + M_PI, 2.*M_PI);
-	result.rotate(position(), rotationAngle);
+    //wenn spiegel wieder strahl reflektieren sollen auskommentieren!
+    //result.rotate(position(), rotationAngle);
 	return result;
 }
 
@@ -271,7 +272,10 @@ Beam FlatMirror::antecedent(const Beam& outputBeam, const Beam& opticalAxis) con
 {
 	Beam result = ABCD::antecedent(outputBeam, opticalAxis);
 
-	/// @bug rotate this beam
+    double relativeAngle = angle() + opticalAxis.angle() - result.angle();
+    double rotationAngle = fmod(-2. * relativeAngle + M_PI, 2. * M_PI);
+    //wenn spiegel wieder strahl reflektieren sollen auskommentieren!
+    //result.rotate(position(), rotationAngle);
 
 	return result;
 }

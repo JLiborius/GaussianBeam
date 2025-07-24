@@ -346,7 +346,7 @@ OpticsView::OpticsView(QGraphicsScene* scene, OpticsBench* bench)
 
 
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
 	m_opticsViewProperties = new OpticsViewProperties(this);
 	m_opticsViewProperties->setLock(dynamic_cast<OpticsScene*>(scene)->scenesLocked());
@@ -794,8 +794,8 @@ void BeamItem::drawUpperBeamSegment(double start, double stop, double pixel, int
 	start = qMax(start, m_startUpperCache);
 	stop  = qMin(stop,  m_stopUpperCache);
 
-	if (start >= stop)
-		return;
+    if (start >= stop)
+        return;
 
 	// "pixel" is added to avoid overlong iterations due to very small steps caused by rounding errors
 	double step = qMax((stop - start)/double(nStep) + pixel, pixel);
@@ -811,8 +811,8 @@ void BeamItem::drawLowerBeamSegment(double start, double stop, double pixel, int
 	start = qMax(start, m_startLowerCache);
 	stop  = qMin(stop,  m_stopLowerCache);
 
-	if (start >= stop)
-		return;
+    if (start >= stop)
+        return;
 
 	// "pixel" is added to avoid overlong iterations due to very small steps caused by rounding errors
 	double step = qMax((stop - start)/double(nStep) + pixel, pixel);

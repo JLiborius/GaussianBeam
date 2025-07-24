@@ -118,8 +118,8 @@ GaussianBeamWindow::GaussianBeamWindow(const QString& fileName)
 	m_addOpticsMenu->addAction(action_AddDielectricSlab);
 	m_addOpticsMenu->addAction(action_AddGenericABCD);
 	action_AddOptics->setMenu(m_addOpticsMenu);
+    m_fileToolBar->addAction(action_RemoveOptics);
 	m_fileToolBar->addAction(action_AddOptics);
-	m_fileToolBar->addAction(action_RemoveOptics);
 	m_fileToolBar->addSeparator();
 	m_fileToolBar->addWidget(wavelengthWidget);
 	addAction(action_Close);

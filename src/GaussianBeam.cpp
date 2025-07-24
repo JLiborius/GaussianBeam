@@ -95,10 +95,10 @@ double Beam::waistPosition(Orientation orientation) const
 
 void Beam::setWaistPosition(double waistPosition, Orientation orientation)
 {
-	if (orientation != Vertical)
+    if (orientation == Horizontal)
 		m_waistPosition.first = waistPosition;
 
-	if (orientation != Horizontal)
+    if (orientation == Vertical)
 		m_waistPosition.second = waistPosition;
 
 	m_sphericalPosition = (Beam::waistPosition(Horizontal) == Beam::waistPosition(Vertical));
@@ -332,7 +332,7 @@ pair<double, double> Beam::angledBoundaries(double position, double slope, Orien
 	/// @todo case b = 1
 
 	double r = z0*sqrt(delta)/(1.-b);
-	double l = waistPosition() + z0*pr/(1.-b);
+    double l = waistPosition(orientation) + z0*pr/(1.-b);//test orientation
 
 	result.first = l + sign(slope)*r;
 	result.second = l - sign(slope)*r;
